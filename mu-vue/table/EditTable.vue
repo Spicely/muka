@@ -1,8 +1,14 @@
-/** * Time 2017/02/22 * Name Spicely * email Spicely@outlook.com * Deploy * 提供编辑和查询的功能组件 */
 <style type="text/css">
-    ul.mu_edit_table_header {
-        display: flex;
+    ul.table_title {
         background: rgb(49, 49, 49);
+    }
+    
+    ul.table_content {
+        background: rgb(171, 163, 163)
+    }
+    
+    ul.mu_edit_table_list {
+        display: flex;
         color: white;
     }
     
@@ -14,6 +20,12 @@
 </style>
 
 <script type="text/javascript">
+    /**  Time 2017/02/22 
+     * Name Spicely 
+     * email Spicely@outlook.com 
+     * Deploy 
+     * 提供编辑和查询的功能组件 
+     */
     export default {
         name: "edit-table",
         render: function(createElement) {
@@ -21,7 +33,8 @@
             // 创建表格头部
             tabList.push(createElement("ul", {
                 class: {
-                    "mu_edit_table_header": true
+                    "mu_edit_table_list": true,
+                    "table_title": true
                 }
             }, this.header.map((item) => {
                 return createElement("li", {
@@ -37,7 +50,8 @@
             this.params.map((item) => {
                 tabList.push(createElement("ul", {
                     class: {
-                        "mu_edit_table_list": true
+                        "mu_edit_table_list": true,
+                        "table_content": true
                     }
                 }, this.header.map((head) => {
                     return createElement("li", {
