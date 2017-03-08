@@ -1,6 +1,7 @@
 <style>
     .mu-tab-bar-pack {
         width: 100%;
+        height: 40px;
     }
     
     .mu-tab-bar-fixed {

@@ -13,7 +13,7 @@
 </template>
 <style>
     .mu-tab-custom-pack {
-        background-color: rgb(18, 197, 202);
+        background-color: rgb(38, 185, 154);
         padding: 5px 0;
     }
     

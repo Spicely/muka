@@ -229,6 +229,15 @@ let lang = Object.create(null, {
             return Object.create(proto || null, value)
         },
         enumerable: true
+    },
+    // 将对像里的所有值转变成Boolean 并返回相反的值
+    taskBack: {
+        value: function(obj) {
+            if (!this.isObject(obj)) throw new Error("obj not is Object");
+            let copyObj = {};
+            for (let i in obj) copyObj[i] = !obj[i];
+            return copyObj;
+        }
     }
 })
 export default lang
