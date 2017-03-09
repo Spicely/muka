@@ -21,6 +21,13 @@
                     <img :src="searchProUrl" />
                 </div>
             </div>
+            <ul class="mu-search-flow-history">
+                <list-item v-for="item in history">
+                    <div slot="icon" class="mu-search-flow-list">
+                        <img :src="historyUrl" />
+                    </div>
+                </list-item>
+            </ul>
         </div>
     </div>
 </template>
@@ -106,6 +113,20 @@
         width: 100%;
         height: 100%;
     }
+    
+    .mu-search-flow-history {
+        width: 100%;
+        margin-top: 5px;
+        background-color: white;
+    }
+    
+    .mu-search-flow-list img {
+        display: block;
+        width: 28px;
+        height: 28px;
+        margin: 0 auto;
+        margin-top: 6px;
+    }
 </style>
 
 <script>
@@ -113,9 +134,13 @@
     import back from "../../icon/back.png";
     import scan from "../../icon/scan.png";
     import searchPro from "../../icon/searchPro.png";
-    import searchClose from "../../icon/search-close.png"
+    import searchClose from "../../icon/search-close.png";
+    import history from "../../icon/history.png";
 
     import lang from "../../mu/base/lang";
+
+    // 加载组件
+    import ListItem from "../List/ListItem";
     /**
      *  time    2017/03/07
      *  name    Spicely
@@ -129,6 +154,12 @@
                 default: "输入要查找的内容"
             }
         },
+        created: function() {
+            this.history = lang.localStorage("mu-history").split(",");
+        },
+        components: {
+            'list-item': ListItem
+        },
         data: () => {
             return {
                 searchUrl: search,
@@ -136,7 +167,9 @@
                 scanUrl: scan,
                 searchProUrl: searchPro,
                 searchCloseUrl: searchClose,
+                historyUrl: history,
                 value: "",
+                history: [],
                 classObject: {
                     "mu-search-flow-show": false,
                     "mu-search-flow-hide": true
@@ -153,6 +186,9 @@
                 } else {
                     this.closeClass["mu-none"] = true;
                 }
+            },
+            history: function() {
+
             }
         },
         methods: {
@@ -166,7 +202,16 @@
                 this.value = "";
             },
             search: function() {
-                console.log(1);
+                console.log(this.value);
+                if (this.value) {
+                    let hist = lang.localStorage("mu-history").split(",");
+                    if (hist.indexOf(this.value) === -1) {
+                        hist.unshift(this.value);
+                        this.history = hist;
+                        lang.localStorage("mu-history", hist.join(","));
+                    }
+                    this.value = "";
+                }
             }
         }
     }

@@ -238,6 +238,17 @@ let lang = Object.create(null, {
             for (let i in obj) copyObj[i] = !obj[i];
             return copyObj;
         }
+    },
+    localStorage: {
+        value: function(...arg) {
+            if (arg.length === 1) {
+                return localStorage.getItem(arg[0]) || "";
+            } else if (arg.length === 2) {
+                localStorage.setItem(arg[0], arg[1]);
+            } else {
+                throw new Error("no arguments");
+            }
+        }
     }
 })
 export default lang
