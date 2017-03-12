@@ -155,7 +155,7 @@
             }
         },
         created: function() {
-            this.history = lang.localStorage("mu-history").split(",");
+            this.history = lang.emptyArray(lang.localStorage("mu-history").split(","));
         },
         components: {
             'list-item': ListItem
@@ -204,7 +204,7 @@
             search: function() {
                 console.log(this.value);
                 if (this.value) {
-                    let hist = lang.localStorage("mu-history").split(",");
+                    let hist = lang.emptyArray(lang.localStorage("mu-history").split(","));
                     if (hist.indexOf(this.value) === -1) {
                         hist.unshift(this.value);
                         this.history = hist;
