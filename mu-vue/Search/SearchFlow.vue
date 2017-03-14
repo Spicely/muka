@@ -8,7 +8,7 @@
                 <div class="mu-search-flow-case mu-search-flow-back" @click="hide">
                     <img :src="backUrl" />
                 </div>
-                <div class="mu-search-flow-case mu-search-flow-scan">
+                <div class="mu-search-flow-case mu-search-flow-scan" @click="scan">
                     <img :src="scanUrl" />
                 </div>
                 <div class="mu-float mu-search-flow-input">
@@ -71,6 +71,7 @@
         width: 100%;
         height: 40px;
         background-color: white;
+        display: flex;
     }
     
     .mu-search-flow-case {
@@ -88,8 +89,8 @@
     }
     
     .mu-search-flow-input {
-        width: 65.8%;
         height: 40px;
+        flex: 1;
         position: relative;
     }
     
@@ -138,6 +139,7 @@
     import history from "../../icon/history.png";
 
     import lang from "../../mu/base/lang";
+    import QRCode from "../../mu/Mobile/QRCode";
 
     // 加载组件
     import ListItem from "../List/ListItem";
@@ -155,7 +157,9 @@
             }
         },
         created: function() {
-            this.history = lang.emptyArray(lang.localStorage("mu-history").split(","));
+            this.history = lang.localStorage("mu-history").split(",").filter((item) => {
+                if (item) return item;
+            });
         },
         components: {
             'list-item': ListItem
@@ -193,6 +197,9 @@
         },
         methods: {
             show: function() {
+                this.history = lang.localStorage("mu-history").split(",").filter((item) => {
+                    if (item) return item;
+                });
                 this.classObject = lang.taskBack(this.classObject);
             },
             hide: function() {
@@ -201,10 +208,16 @@
             clean: function() {
                 this.value = "";
             },
+            scan: function() {
+                QRCode().then(function() {
+                    alert("成功");
+                }).catch(function(error) {
+                    alert(error);
+                })
+            },
             search: function() {
-                console.log(this.value);
                 if (this.value) {
-                    let hist = lang.emptyArray(lang.localStorage("mu-history").split(","));
+                    let hist = lang.localStorage("mu-history").split(",").filter(item => item);
                     if (hist.indexOf(this.value) === -1) {
                         hist.unshift(this.value);
                         this.history = hist;
