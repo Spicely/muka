@@ -249,18 +249,6 @@ let lang = Object.create(null, {
                 throw new Error("no arguments");
             }
         }
-    },
-    emptyArray: {
-        value: function(value) {
-            if (!this.isArray(value)) throw new Error("value not is Array");
-            let arr = [];
-            value.map((item) => {
-                if (item) {
-                    arr.push(item);
-                }
-            });
-            return arr;
-        }
     }
 })
 export default lang
