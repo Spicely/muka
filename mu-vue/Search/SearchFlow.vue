@@ -36,11 +36,11 @@
     .mu-search-flow-pack {
         width: 100%;
     }
-    
+
     .mu-search-flow-pict {
         width: 100%;
     }
-    
+
     .mu-search-flow-pict img {
         display: block;
         width: 28px;
@@ -48,38 +48,37 @@
         margin: 0 auto;
         margin-top: 6px;
     }
-    
+
     .mu-search-flow-style {
         height: 100%;
-        width: 98%;
+        width: 100%;
         position: fixed;
         left: 0;
         top: 0;
         background-color: rgba(0, 0, 0, 0.3);
-        padding: 1%;
     }
-    
+
     .mu-search-flow-hide {
         display: none;
     }
-    
+
     .mu-search-flow-show {
         display: block;
     }
-    
+
     .mu-search-flow-style .mu-search-flow-tool {
-        width: 100%;
         height: 40px;
         background-color: white;
         display: flex;
+        margin: 5px 5px
     }
-    
+
     .mu-search-flow-case {
         float: left;
         width: 40px;
         height: 40px;
     }
-    
+
     .mu-search-flow-case img {
         display: block;
         width: 28px;
@@ -87,13 +86,13 @@
         margin: 0 auto;
         margin-top: 6px;
     }
-    
+
     .mu-search-flow-input {
         height: 40px;
         flex: 1;
         position: relative;
     }
-    
+
     .mu-search-flow-input input {
         width: 100%;
         border: none;
@@ -101,7 +100,7 @@
         line-height: 30px;
         outline: none
     }
-    
+
     .mu-search-flow-close {
         width: 20px;
         height: 20px;
@@ -109,18 +108,18 @@
         top: 10px;
         right: 2px;
     }
-    
+
     .mu-search-flow-close img {
         width: 100%;
         height: 100%;
     }
-    
+
     .mu-search-flow-history {
         width: 100%;
         margin-top: 5px;
         background-color: white;
     }
-    
+
     .mu-search-flow-list img {
         display: block;
         width: 28px;
