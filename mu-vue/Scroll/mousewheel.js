@@ -17,16 +17,16 @@ import lang from "../../mu/base/lang";
             }
         } else if (el.addEventListener) {
             // 先清除滚动事件
-            old && el.removeEventListener('scroll', old);
-            el.addEventListener('scroll', function (e) {
+            old && el.removeEventListener('mousewheel', old);
+            el.addEventListener('mousewheel', function (e) {
                 current && current(e, {
                     scrollTop: el.scrollTop,
                     scrollLeft: el.scrollLeft
                 });
             });
         } else {
-            old && el.detachEvent('onscroll', old);
-            el.attach('onscroll', function(e) {
+            old && el.detachEvent('onmousewheel', old);
+            el.attach('onmousewheel', function(e) {
                 e = e || window.event;
                 current && current(e, {
                     scrollTop: el.scrollTop,
@@ -49,16 +49,16 @@ import lang from "../../mu/base/lang";
                 return;
             }
             if (!binding.value || !lang.isFunction(binding.value)) {
-                throw new Error('The scroll listener is not a function');
+                throw new Error('The mousewheel listener is not a function');
             }
             handleListeners(el, binding.value, binding.oldValue);
         },
         unbind: function(el, binding) {
             if (binding.value && lang.isFunction(binding.value)) {
                 if (el.removeEventListener) {
-                    el.removeEventListener('scroll', binding.value);
+                    el.removeEventListener('mousewheel', binding.value);
                 } else {
-                    el.detachEvent('onscroll', binding.value);
+                    el.detachEvent('onmousewheel', binding.value);
                 }
             }
         }
