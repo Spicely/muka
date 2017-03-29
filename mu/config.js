@@ -5,7 +5,7 @@
  */
 let config = Object.create(null, {
   baseName: {
-    value: 'miz'
+    value: 'muka'
   },
   getObjectName: {
     value: function (name) {

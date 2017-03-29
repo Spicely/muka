@@ -1,9 +1,9 @@
 <template>
-    <div class="mu-scrollable-pane-pack">
-        <div class="mu-scrollable-pane-hold" v-scroll="onScroll">
-            <div class="mu-scrollable-pane-bar"></div>
+    <div class="mu-scrollable-pane-pack" ref='pack'>
+        <div class="mu-scrollable-pane-hold" v-scroll="onScroll" ref='hold' :style="style">
             <slot></slot>
         </div>
+        <div class="mu-scrollable-pane-bar" ref='bar'></div>
     </div>
 </template>
 
@@ -11,6 +11,7 @@
   .mu-scrollable-pane-pack {
         overflow: hidden;
         position: relative;
+        height: 100%;
         .mu-scrollable-pane-hold {
             .mu-scrollable-pane-bar{
                 position: absolute;
@@ -33,13 +34,21 @@
    *      用于PC和Mobile中都能使用的组件
    */
     import "./mousewheel";
+    import domStyle from '../../mu/dom/style'
     export default {
         created: function(){},
         name: "scrollable-pane",
+        data:() => {
+            return {
+                style: {
+                    top: 0
+                }
+            }
+        },
         methods: {
-        onScroll: function (top) {
-            console.log(top)
-        }
+        onScroll: function (top, left) {
+            console.log(domStyle.get(this.$refs.hold,'height'),domStyle.get(this.$refs.pack,'height'));
+        },
     },
   }
 </script>

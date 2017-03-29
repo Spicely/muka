@@ -13,7 +13,7 @@ import config from '../config'
  * @param  {[type]} object  [description]
  * @return {[type]}         [description]
  */
-let getProp = function(parts, create, content) {
+let getProp = function (parts, create, content) {
     let part = create ? content ? content : config.global : content ? content : {}
     try {
         for (let i = 0; i < parts.length; i++) {
@@ -36,7 +36,7 @@ let getProp = function(parts, create, content) {
 let lang = Object.create(null, {
     // 检查对象类型
     type: {
-        value: function(it) {
+        value: function (it) {
             let o = {}.toString.call(it)
             let ele = o.split(' ')[1].substr(0, 4)
             switch (o) {
@@ -74,63 +74,63 @@ let lang = Object.create(null, {
     },
     // 判断是否为数组
     isArray: {
-        value: function(it) {
+        value: function (it) {
             return Array.isArray(it)
         },
         enumerable: true
     },
     // 判断是否为JSON
     isObject: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'object'
         },
         enumerable: true
     },
     // 判断是否为函数
     isFunction: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'function'
         },
         enumerable: true
     },
     // 判断是否为字符串
     isString: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'string'
         },
         enumerable: true
     },
     // 判断是否为Blob
     isBlob: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'blob'
         },
         enumerable: true
     },
     // 判断是否为节点
     isElement: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'element'
         },
         enumerable: true
     },
     // 判断是否没有被定义
     isNotDef: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'undefined' || this.type(it) === 'null' || isNaN(it)
         },
         enumerable: true
     },
     // 判断是否为数字
     isNumber: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'number';
         },
         enumerable: true
     },
     // 判断是否为布尔
     isBoolean: {
-        value: function(it) {
+        value: function (it) {
             return this.type(it) === 'boolean'
         },
         enumerable: true
@@ -138,7 +138,7 @@ let lang = Object.create(null, {
 
     // 判断是否为空对象
     isEmptyObject: {
-        value: function(it) {
+        value: function (it) {
             let t
             for (t in it) return !1
             return !0
@@ -148,7 +148,7 @@ let lang = Object.create(null, {
 
     // 将伪数组,字符串等转换成数组
     toArray: {
-        value: function(it) {
+        value: function (it) {
             // 将伪数组转成数组
             if (it.length && !this.isArray(it) && !this.isString(it)) {
                 //return Array.apply([], it)
@@ -166,7 +166,7 @@ let lang = Object.create(null, {
 
     // 设置对象值
     setObject: {
-        value: function(name, create = false, value = undefined, context = undefined) {
+        value: function (name, create = false, value = undefined, context = undefined) {
             let parts = name.split('.')
             let p = parts.pop()
             let obj = getProp(parts, create, context)
@@ -177,7 +177,7 @@ let lang = Object.create(null, {
 
     // 获得对象值 如果第二个参数为true 则会为你在window或者传递的参数里创建一个对象
     getObject: {
-        value: function(name, create = false, context = undefined) {
+        value: function (name, create = false, context = undefined) {
             return !name ? context : getProp(name.split("."), create, context)
         },
         enumerable: true
@@ -185,7 +185,7 @@ let lang = Object.create(null, {
 
     // 向对象添加可配置的对象 descriptor
     defineProperty: {
-        value: function(obj, desc) {
+        value: function (obj, desc) {
             for (let i in desc) {
                 let init = {
                     enumerable: true,
@@ -206,7 +206,7 @@ let lang = Object.create(null, {
     },
     // 创建对象
     create: {
-        value: function(obj, proto) {
+        value: function (obj, proto) {
             let value = {}
             for (let i in obj) {
                 let init = {
@@ -232,7 +232,7 @@ let lang = Object.create(null, {
     },
     // 将对像里的所有值转变成Boolean 并返回相反的值
     taskBack: {
-        value: function(obj) {
+        value: function (obj) {
             if (!this.isObject(obj)) throw new Error("obj not is Object");
             let copyObj = {};
             for (let i in obj) copyObj[i] = !obj[i];
@@ -240,7 +240,7 @@ let lang = Object.create(null, {
         }
     },
     localStorage: {
-        value: function(...arg) {
+        value: function (...arg) {
             if (arg.length === 1) {
                 return localStorage.getItem(arg[0]) || "";
             } else if (arg.length === 2) {
@@ -250,5 +250,6 @@ let lang = Object.create(null, {
             }
         }
     }
-})
-export default lang
+});
+lang.setObject(config.getObjectName('base.lang'), 1, lang);
+export default lang;
