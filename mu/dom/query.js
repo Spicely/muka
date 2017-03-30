@@ -15,6 +15,7 @@ let query = (selector, context) => {
             throw new Error('query', 'context not is Element');
         }
     } else {
+        console.log(lang.isElement(selector),1)
         return lang.isElement(selector) ? selector.length ? selector : [selector] : config.basic.querySelectorAll(selector);
     }
 };
