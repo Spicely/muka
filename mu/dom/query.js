@@ -15,8 +15,19 @@ let query = (selector, context) => {
             throw new Error('query', 'context not is Element');
         }
     } else {
-        console.log(lang.isElement(selector),1)
-        return lang.isElement(selector) ? selector.length ? selector : [selector] : config.basic.querySelectorAll(selector);
+        if (lang.isElement(selector)) {
+            if (selector.length) {
+                return selector;
+            } else {
+                return [selector];
+            }
+        } else {
+            if (lang.isString(selector)) {
+                return lang.toArray(config.basic.querySelectorAll(selector));
+            } else {
+                return [];
+            }
+        }
     }
 };
 // query.only = (selector, context) => {
