@@ -28,7 +28,7 @@ let domStyle = lang.create({
             let value = config.global.getComputedStyle(item)[name] || node[name];
             return lang.isNumber(value) ? value : value.indexOf('px') === -1 ? value : parseInt(value);
         });
-        return lang.isElement(node) ? values[0] : values;
+        return values;
     },
 });
 lang.setObject(config.getObjectName('dom.style'), 1, domStyle);
