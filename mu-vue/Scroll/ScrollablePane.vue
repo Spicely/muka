@@ -1,6 +1,6 @@
 <template>
     <div class="mu-scrollable-pane-pack" ref='pack'>
-        <div class="mu-scrollable-pane-hold" v-scroll="onScroll" ref='hold' :style="holdStyle">
+        <div class="mu-scrollable-pane-hold" ref='hold' v-scroll="onScroll" :style="holdStyle">
             <slot></slot>
         </div>
         <div class="mu-scrollable-pane-bar" ref='bar' :style="barStyle"></div>
@@ -35,10 +35,10 @@
    *      用于PC和Mobile中都能使用的组件
    */
     import './mousewheel';
-    import domStyle from '../../mu/dom/style'
+    import domStyle from '../../mu/dom/style';
     export default {
         mounted: function() {
-            this.initScrollBar();
+            setTimeout(this.initScrollBar,10)
         },
         name: "scrollable-pane",
         data:() => {
@@ -64,15 +64,16 @@
         },
         methods: {
             onScroll: function (top, left) {
-                if(this.hideRange <= 0) {
-                    return;
-                }
+                if (this.hideRange <= 0) return;
                 this.holdStyle.top = parseFloat(this.holdStyle.top) + (top.wheelDelta / 120 * 20) + 'px'
-                if(parseFloat(this.holdStyle.top) > 0) {
+                this.barStyle.top = -(parseFloat(this.holdStyle.top) + (top.wheelDelta / 120 * 20)) + 'px'
+                if (parseFloat(this.holdStyle.top) > 0) {
                     this.holdStyle.top = 0 + 'px';
+                    this.barStyle.top = 0 + 'px';
                 }
-                if(Math.abs(parseFloat(this.holdStyle.top)) > this.hideRange) {
+                if (Math.abs(parseFloat(this.holdStyle.top)) > this.hideRange) {
                     this.holdStyle.top = -this.hideRange + 'px';
+                    this.barStyle.top = this.hideRange + 'px';
                 }
             },
             initScrollBar: function() {
@@ -80,20 +81,18 @@
                     throw new Error('Scroll mode not defined');
                 }
                 switch(this.mode){
-                    case 'alow': this.alowScroll()
+                    case 'alow': this.alowScroll();
+                
                 }
             },
             // 设置向下的滚动
             alowScroll: function() {
-                let packH = domStyle.get(this.$refs.pack, 'height');
+                let packH = domStyle.get(this.$refs.pack, 'height')[0];
                 let holdH = 0;
+                holdH = domStyle.get(this.$refs.hold, 'height')[0];
                 this.hideRange = holdH - packH;
-                this.$slots.default.forEach((item) => {
-                    console.log(1)
-                   // holdH += domStyle.get(item.elm, 'height');
-                });
-                if(holdH > this.packH) {
-                    this.barStyle.height = this.packH / holdH  * 100 + '%';
+                if(holdH > packH) {
+                    this.barStyle.height = packH / holdH  * 100 + '%';
                 }
             }
         },
