@@ -5,7 +5,6 @@
     
     ul.mu-list-icon-line {
         display: flex;
-        padding: 10px 0;
     }
     
     li.mu-list-icon-list {
@@ -27,6 +26,8 @@
      *  time 2017/03/03
      *  name Spicely
      *  email Spicely@outlook.com
+     *  docs
+     *      @params [{icon: 'xxx', label: 'xxx', number: 0}]
      */
     export default {
         name: "list-icon",
@@ -43,35 +44,62 @@
                         }
                     }, this.params.map((item, key) => {
                         if (key >= i * this.num && key < (i * this.num + this.num)) {
+                            let classes = {"mu-list-icon-list": true};
+                            if(item.class) {
+                                classes[item.class] = true
+                            }
                             return createElement("li", {
-                                class: {
-                                    "mu-list-icon-list": true
-                                }
+                                class: classes
                             }, [createElement("img", {
                                 class: {
                                     "mu-list-icon-img": true
                                 },
                                 attrs: {
-                                    src: item.src
+                                    src: item.icon
                                 }
                             }), createElement("div", {
                                 class: {
                                     "mu-list-icon-lable": true
-                                }
+                                },
+                                innerHTML: item.label
+                            }), createElement("div", {
+                                class: {
+                                    "mu-list-icon-number": true
+                                },
+                                innerHTML: item.number
                             })]);
                         }
                     }))));
             } else {
                 iconList.push(createElement("ul", {
                     class: {
-                        "mu-list-icon-line": true
-                    }
-                }, this.params.map((item, key) => {
-                    return createElement("li", {
-                        class: {
-                            "mu-list-icon-list": true
+                            "mu-list-icon-line": true
                         }
-                    });
+                }, this.params.map((item, key) => {
+                    let classes = {"mu-list-icon-list": true};
+                    if(item.class) {
+                        classes[item.class] = true
+                    }
+                    return createElement("li", {
+                        class: classes
+                    },[createElement("img", {
+                        class: {
+                            "mu-list-icon-img": true
+                        },
+                        attrs: {
+                            src: item.icon
+                        }
+                    }), createElement("div", {
+                        class: {
+                            "mu-list-icon-lable": true
+                        },
+                        innerHTML: item.label || ""
+                    }), createElement("div", {
+                        class: {
+                            "mu-list-icon-number": true
+                        },
+                        innerHTML: item.number
+                    })]);
                 })));
             }
             return createElement("div", {

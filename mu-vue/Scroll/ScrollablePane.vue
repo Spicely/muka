@@ -14,6 +14,7 @@
         height: 100%;
         .mu-scrollable-pane-hold {
             position: relative;
+            transition: all 0.5s ease-in-out;
         }  
         .mu-scrollable-pane-bar{
             position: absolute;
@@ -21,6 +22,7 @@
             width: 5px;
             border-radius: 2.5px;
             background-color: rgba(0,0,0,0.6);
+            transition: all 0.5s ease-in-out;
         }
   }
 
@@ -67,11 +69,11 @@
                 if (this.hideRange <= 0) return;
                 this.holdStyle.top = parseFloat(this.holdStyle.top) + (top.wheelDelta / 120 * 20) + 'px'
                 this.barStyle.top = -(parseFloat(this.holdStyle.top) + (top.wheelDelta / 120 * 20)) + 'px'
-                if (parseFloat(this.holdStyle.top) > 0) {
+                if (parseFloat(this.holdStyle.top) >= 0) {
                     this.holdStyle.top = 0 + 'px';
                     this.barStyle.top = 0 + 'px';
                 }
-                if (Math.abs(parseFloat(this.holdStyle.top)) > this.hideRange) {
+                if (Math.abs(parseFloat(this.holdStyle.top)) >= this.hideRange) {
                     this.holdStyle.top = -this.hideRange + 'px';
                     this.barStyle.top = this.hideRange + 'px';
                 }
