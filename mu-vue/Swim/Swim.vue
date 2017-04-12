@@ -1,12 +1,13 @@
 <template>
-    <div class="mu-swim-pack">
-        <slot></slot>
-    </div>
+  <div class="mu-swim-pack">
+    <slot></slot>
+  </div>
 </template>
 <style lang="less">
-    .mu-swim-pack{
-        position: fixed;
-    }
+  .mu-swim-pack {
+    position: fixed;
+  }
+
 </style>
 <script>
   /**
@@ -16,8 +17,8 @@
    *  docs
    *      用于提供悬浮窗口
    */
- export default { 
-     name: "swim", 
- }
+  export default {
+    name: 'swim'
+  }
 
 </script>
