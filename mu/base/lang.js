@@ -174,7 +174,20 @@ let lang = Object.create(null, {
     },
     enumerable: true
   },
-
+  // 判断值中是否存在
+  hash: {
+    value: function (source, value) {
+      if (this.isArray(source)) {
+        return source.indexOf(value) !== -1
+      } else if (this.isObject(source)) {
+        return source.hasOwnProperty(value)
+      } else if (this.isString(source)) {
+        return source.indexOf(value) !== -1
+      }
+      throw new Error('source type not supported')
+    },
+    enumerable: true
+  },
   // 获得对象值 如果第二个参数为true 则会为你在window或者传递的参数里创建一个对象
   getObject: {
     value: function (name, create = false, context = undefined) {
