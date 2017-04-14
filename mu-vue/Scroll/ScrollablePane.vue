@@ -40,7 +40,7 @@
   import domStyle from '../../mu/dom/style'
   export default {
     mounted: function () {
-      setTimeout(this.initScrollBar, 10)
+      setTimeout(this.initScrollBar, 100)
     },
     name: 'scrollable-pane',
     data: () => {
@@ -90,7 +90,7 @@
       // 设置向下的滚动
       alowScroll: function () {
         let packH = domStyle.get(this.$refs.pack, 'height')[0]
-        let holdH = 0;
+        let holdH = 0
         holdH = domStyle.get(this.$refs.hold, 'height')[0]
         this.hideRange = holdH - packH
         if (holdH > packH) {

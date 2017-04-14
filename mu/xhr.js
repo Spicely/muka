@@ -26,16 +26,17 @@ let xhr = function (uri, options = {}) {
     }
     xhr.open(lang.hash(config.method, options.type && options.type.toLocaleUpperCase()) ? options.type.toLocaleUpperCase() : config.method[0], uri, true)
     xhr.onload = function (data) {
+      data.xhr = xhr
       if (this.status === 200) {
         resolve(data)
       }
       if (this.status === 500 || this.status === 404) {
-        reject(data)
+        reject('Server not responding')
       }
     }
     xhr.send()
   })
   return def
 }
-lang.setObject(config.getObjectName('dom.query'), 1, xhr)
+lang.setObject(config.getObjectName('xhr'), 1, xhr)
 export default xhr

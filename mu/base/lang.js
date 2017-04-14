@@ -58,6 +58,8 @@ let lang = Object.create(null, {
           return 'boolean'
         case '[object Blob]':
           return 'blob'
+        case '[object File]':
+          return 'file'
         default:
           if (!it) {
             return '' + it + ''
@@ -69,6 +71,13 @@ let lang = Object.create(null, {
             }
           }
       }
+    },
+    enumerable: true
+  },
+  // 是否为文件类型
+  isFile: {
+    value: function (it) {
+      return this.type(it) === 'file'
     },
     enumerable: true
   },
