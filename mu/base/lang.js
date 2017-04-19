@@ -268,17 +268,6 @@ let lang = Object.create(null, {
       }
       return obj
     }
-  },
-  localStorage: {
-    value: function (...arg) {
-      if (arg.length === 1) {
-        return localStorage.getItem(arg[0]) || ''
-      } else if (arg.length === 2) {
-        localStorage.setItem(arg[0], arg[1])
-      } else {
-        throw new Error('no arguments')
-      }
-    }
   }
 })
 lang.setObject(config.getObjectName('base.lang'), 1, lang)
