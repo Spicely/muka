@@ -16,24 +16,45 @@ export default (function () {
   }
 
   // 重新排列数据
-  function getParams (data) {
-    if (lang.isObject(data)) {
-      let params = ''
-      for (let i in data) {
-        params += i + '=' + data[i] + deploy.mark
-      }
-      return params.substr(0, params.length - 1)
-    } else {
-      return data
+  function encodeFormData (data) {
+    if (!data) return ''
+    let pairs = []
+    for (let name in data) {
+      if (!data.hasOwnProperty(name)) continue
+      if (typeof data[name] === 'function') continue
+      let value = data[name].toString()
+      name = encodeURIComponent(name.replace('%20', '+'))
+      value = encodeURIComponent(value.replace('%20', '+'))
+      pairs.push(name + '=' + value)
     }
+    return pairs.join(deploy.mark)
   }
   // 获得重新排列过的uri
   function setUri (uri, data, type) {
     if (type === deploy.method[0]) {
-      let str = getParams(data)
+      let str = encodeFormData(data)
       return str ? uri + '?' + str : uri
     } else {
       return uri
+    }
+  }
+
+  // 获得转译过后的数据
+  function getData (data, type) {
+    if (type) {
+      type = type.toLocaleUpperCase()
+    } else {
+      type = 'JSON'
+    }
+    try {
+      switch (type) {
+        case 'JSON':
+          return JSON.parse(data.response)
+        case 'STRING':
+          return data.responseText
+      }
+    } catch (e) {
+      return data.response
     }
   }
   let xhr = function (uri, options = {}) {
@@ -45,7 +66,12 @@ export default (function () {
     }
     let params = {
       // 异步请求 同步、异步
-      async: true
+      async: true,
+      // 请求头文件
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     }
     Object.assign(params, options)
     var xhr = new XMLHttpRequest()
@@ -56,18 +82,22 @@ export default (function () {
       }
       let type = lang.hash(deploy.method, options.type && options.type.toLocaleUpperCase()) ? options.type.toLocaleUpperCase() : deploy.method[0]
       xhr.open(type, setUri(uri, options.data, type), params.async)
+      if (type === 'POST') {
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+      }
+      for (let i in params.headers) {
+        xhr.setRequestHeader(i, params.headers[i])
+      }
       xhr.onload = function (data) {
-        if (this.status === 200) {
-          resolve({
-            data: JSON.parse(data.target.response),
-            response: xhr
-          })
+        if (this.status === 200 || this.status === 304) {
+          return resolve(getData(data.target, params.dataType))
         }
         if (this.status === 500 || this.status === 404) {
-          reject('Server not responding')
+          return reject('Server not responding')
         }
+        return reject('Unknown cause')
       }
-      xhr.send(getParams(options.data))
+      xhr.send(encodeFormData(options.data, type))
     })
     return def
   }

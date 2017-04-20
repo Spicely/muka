@@ -94,7 +94,8 @@
             class: classes,
             on: {
               click: item.click || function () {}
-            }
+            },
+            click: item.click
           }, [createElement('img', {
             class: {
               'mu-list-icon-img': true

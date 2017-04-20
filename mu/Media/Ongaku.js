@@ -10,6 +10,7 @@ import xhr from '../xhr'
 
 export default (function () {
   let type = ['sine', 'square', 'sawtooth', 'triangle', 'custom']
+  let audio = new Audio()
   class Ongaku {
     constructor () {
       // 初始化对象
@@ -21,11 +22,42 @@ export default (function () {
         this.gainNode = this.ongaku.createGain()
         // 建立一个分析器
         this.analyserNode = this.ongaku.createAnalyser()
-        window.aaa = this
+        this.sources = []
+        this.playNumer = 0
+        this.playKey = ''
+        this.playConf = Object.create(Object.prototype, {
+          playNumer: {
+            get: () => {
+              return this.playNumer
+            },
+            set: (val) => {
+              this.pause()
+              val = val < 0 ? 0 : val >= this.sources.length ? this.sources.length - 1 : val
+              this.playNumer = val
+              audio.src = this.playKey ? this.sources[this.playConf.playNumer][this.playKey] : this.sources[this.playConf.playNumer]
+              console.log(audio.src)
+              audio.onerror = function () {
+                throw new Error('File not found')
+              }
+              this.play()
+            }
+          }
+        })
         // 初始化一些限制
       } catch (err) {
         throw new Error('!Your browser does not support Web Audio API!')
       }
+    }
+    // 设置资源路径 Array || String
+    setSources (arr, key) {
+      if (!lang.isArray(arr)) return
+      this.sources = arr
+      this.playKey = key
+      audio.src = key ? this.sources[this.playConf.playNumer][key] : this.sources[this.playConf.playNumer]
+      audio.onerror = function () {
+        throw new Error('File not found')
+      }
+      this.getElementSources(audio)
     }
     // 获得来自audio节点的文件
     getElementSources (element) {
@@ -33,66 +65,72 @@ export default (function () {
         throw new Error('type not is Elememt')
       }
       this.sourceNode = new Promise((resolve, reject) => {
-        this.ongaku.createMediaElementSource(element)
+        var elementSource = this.ongaku.createMediaElementSource(element)
+        // 连接音频控制
+        elementSource.connect(this.gainNode)
+        // 连接到设备上
+        this.gainNode.connect(this.ongaku.destination)
         resolve()
       })
     }
     // 获得来自本地文件
-    getLocalSources (file) {
-      if (!lang.isFile(file)) {
-        throw new Error('file not is fileObject')
-      }
-      this.bufferNode = this.ongaku.createBufferSource()
-      let fr = new FileReader()
-      this.sourceNode = new Promise((resolve, reject) => {
-        fr.onload = (e) => {
-          // 文件读入完成，进行解码
-          var fileResult = e.target.result
-          this.ongaku.decodeAudioData(fileResult)
-            .then((buffer) => {
-              // 将解码出来的数据放入source中
-              this.bufferNode.buffer = buffer
-              resolve()
-            })
-            .catch(() => {
-              reject('!Fail to decode the file!')
-            })
-        }
-        fr.onerror = () => {
-          // 文件读入出错
-          reject('!Fail to read the file')
-        }
-      })
-      fr.readAsArrayBuffer(file)
-    }
-    // 获得来自服务器文件
-    getXhrSource (url, options = {}) {
-      if (!lang.isString(url)) {
-        throw new Error('url type not is String')
-      }
-      if (!lang.isObject(options)) {
-        throw new Error('options type not is Object')
-      }
-      this.bufferNode = this.ongaku.createBufferSource()
-      options.responseType = !options.responseType ? 'arraybuffer' : options.responseType
-      this.sourceNode = new Promise((resolve, reject) => {
-        xhr(url, options).then((request) => {
-          // 数据缓冲完成之后，进行解码
-          this.ongaku.decodeAudioData(request.response)
-              .then((buffer) => {
-                // 将解码出来的数据放入buffer中
-                this.bufferNode.buffer = buffer
-                resolve()
-              })
-              .catch(() => {
-                reject('!Fail to decode the file!')
-              })
-        })
-          .catch((err) => {
-            reject(err)
-          })
-      })
-    }
+    // getLocalSources (file) {
+    //   if (!lang.isFile(file)) {
+    //     throw new Error('file not is fileObject')
+    //   }
+    //   this.bufferNode = this.ongaku.createBufferSource()
+    //   let fr = new FileReader()
+    //   this.sourceNode = new Promise((resolve, reject) => {
+    //     fr.onload = (e) => {
+    //       // 文件读入完成，进行解码
+    //       var fileResult = e.target.result
+    //       this.ongaku.decodeAudioData(fileResult)
+    //         .then((buffer) => {
+    //           // 将解码出来的数据放入source中
+    //           this.bufferNode.buffer = buffer
+    //           resolve()
+    //         })
+    //         .catch(() => {
+    //           reject('!Fail to decode the file!')
+    //         })
+    //     }
+    //     fr.onerror = () => {
+    //       // 文件读入出错
+    //       reject('!Fail to read the file')
+    //     }
+    //   })
+    //   fr.readAsArrayBuffer(file)
+    // }
+    // // 获得来自服务器文件
+    // getXhrSource (url, options = {}) {
+    //   if (!lang.isString(url)) {
+    //     throw new Error('url type not is String')
+    //   }
+    //   if (!lang.isObject(options)) {
+    //     throw new Error('options type not is Object')
+    //   }
+    //   this.bufferNode = this.ongaku.createBufferSource()
+    //   options.responseType = !options.responseType ? 'arraybuffer' : options.responseType
+    //   this.sourceNode = new Promise((resolve, reject) => {
+    //     xhr(url, options).then((request) => {
+    //         // 数据缓冲完成之后，进行解码
+    //       this.ongaku.decodeAudioData(request)
+    //           .then((buffer) => {
+    //             // 将解码出来的数据放入buffer中
+    //             this.bufferNode.buffer = buffer
+
+    //             this.bufferNode.connect(this.ongaku.destination)
+    //             resolve()
+    //           })
+    //           .catch(() => {
+    //             reject('!Fail to decode the file!')
+    //           })
+    //     })
+    //       .catch((err) => {
+    //         reject(err)
+    //       })
+    //   })
+    // }
     // 获得来自硬件内容 如: 麦克风、视频
     // getMediaSouce () {
     //   if (navigator.mediaDevices) {
@@ -140,22 +178,26 @@ export default (function () {
     // }
     // 播放
     play () {
-      this.bufferNode.connect(this.ongaku.destination)
       this.sourceNode.then(() => {
-        this.bufferNode.start()
-        return this
+        this.bufferNode ? this.bufferNode.start() : audio.play()
       })
     }
-    stop () {
+    // 暂停
+    pause () {
       this.sourceNode.then(() => {
-        this.bufferNode.stop()
-        return this
+        this.bufferNode ? this.bufferNode.stop() : audio.pause()
       })
+    }
+    // 下一曲
+    next () {
+      this.playConf.playNumer++
+    }
+    // 上一曲
+    prev () {
+      this.playConf.playNumer--
     }
     // 设置音调
-    setOscillator (params) {
-
-    }
+    setOscillator (params) {}
   }
   lang.setObject(config.getObjectName('Media.Ongaku'), 1, Ongaku)
   return Ongaku
