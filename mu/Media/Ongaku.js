@@ -10,7 +10,6 @@ import xhr from '../xhr'
 
 export default (function () {
   let type = ['sine', 'square', 'sawtooth', 'triangle', 'custom']
-  let audio = new Audio()
   class Ongaku {
     constructor () {
       // 初始化对象
@@ -22,6 +21,8 @@ export default (function () {
         this.gainNode = this.ongaku.createGain()
         // 建立一个分析器
         this.analyserNode = this.ongaku.createAnalyser()
+        // 创建音频播放器
+        this.audio = new Audio()
         this.sources = []
         this.playNumer = 0
         this.playKey = ''
@@ -34,15 +35,18 @@ export default (function () {
               this.pause()
               val = val < 0 ? 0 : val >= this.sources.length ? this.sources.length - 1 : val
               this.playNumer = val
-              audio.src = this.playKey ? this.sources[this.playConf.playNumer][this.playKey] : this.sources[this.playConf.playNumer]
-              console.log(audio.src)
-              audio.onerror = function () {
+              this.audio.src = this.playKey ? this.sources[this.playConf.playNumer][this.playKey] : this.sources[this.playConf.playNumer]
+              this.audio.onerror = function () {
                 throw new Error('File not found')
               }
               this.play()
             }
           }
         })
+        // 提供播放时回调函数
+        this.playCallBack = () => {}
+        // 暂停播放的回调
+        this.pauseCallBack = () => {}
         // 初始化一些限制
       } catch (err) {
         throw new Error('!Your browser does not support Web Audio API!')
@@ -53,11 +57,11 @@ export default (function () {
       if (!lang.isArray(arr)) return
       this.sources = arr
       this.playKey = key
-      audio.src = key ? this.sources[this.playConf.playNumer][key] : this.sources[this.playConf.playNumer]
-      audio.onerror = function () {
+      this.audio.src = key ? this.sources[this.playConf.playNumer][key] : this.sources[this.playConf.playNumer]
+      this.audio.onerror = function () {
         throw new Error('File not found')
       }
-      this.getElementSources(audio)
+      this.getElementSources(this.audio)
     }
     // 获得来自audio节点的文件
     getElementSources (element) {
@@ -179,13 +183,15 @@ export default (function () {
     // 播放
     play () {
       this.sourceNode.then(() => {
-        this.bufferNode ? this.bufferNode.start() : audio.play()
+        this.bufferNode ? this.bufferNode.start() : this.audio.play()
+        lang.isFunction(this.playCallBack) && this.playCallBack()
       })
     }
     // 暂停
     pause () {
       this.sourceNode.then(() => {
-        this.bufferNode ? this.bufferNode.stop() : audio.pause()
+        this.bufferNode ? this.bufferNode.stop() : this.audio.pause()
+        lang.isFunction(this.pauseCallBack) && this.pauseCallBack()
       })
     }
     // 下一曲
@@ -198,6 +204,14 @@ export default (function () {
     }
     // 设置音调
     setOscillator (params) {}
+    // 获得播放时间
+    getPlayTime () {
+      return this.audio.currentTime
+    }
+    // 获得当前音乐总时长
+    getOngakuTime () {
+      return this.audio.duration
+    }
   }
   lang.setObject(config.getObjectName('Media.Ongaku'), 1, Ongaku)
   return Ongaku
