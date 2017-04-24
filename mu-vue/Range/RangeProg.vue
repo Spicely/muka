@@ -7,6 +7,15 @@
 </template>
 
 <style lang="less">
+  @keyframes sports {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.6);
+    }
+  }
+
   .mu-range-pack {
     width: 90px;
     display: inline-block;
@@ -18,6 +27,9 @@
       background: white;
       .mu-animation {
         transition: all 0.2s cubic-bezier(0.4, 0, 1, 1);
+      }
+      .mu-motioned::after {
+        animation: sports 1s infinite ease-in-out alternate;
       }
       .mu-range-handle {
         height: 12px;
@@ -55,6 +67,7 @@
    *  docs
    *      提供可拖拽的进度条
    */
+  import lang from '../../mu/base/lang'
   import domStyle from '../../mu/dom/style'
   export default {
     name: 'range-prog',
@@ -73,19 +86,26 @@
         annals: 0,
         // 拖动节点的宽度
         handle: 0,
+        // 拖动状态
+        drapStatus: false,
         handleStyle: {
           left: '0%',
           bottom: '0%'
         },
+        directions: {
+          side: 'left',
+          vertical: 'bottom'
+        },
         handleClass: {
-          'mu-animation': false
+          'mu-animation': false,
+          'mu-motioned': false
         }
       }
     },
     props: {
       mode: {
         type: String,
-        default: 'side' // side  vertical
+        default: 'side' // side vertical
       },
       max: {
         type: Number,
@@ -105,19 +125,43 @@
       }
     },
     created: function () {
+      let mode = ['side', 'vertical']
       if (!this.max && this.max > 0) throw new Error('max must be greater than 0')
       if (!this.mode) throw new Error('not set mode')
+      if (mode.indexOf(this.mode) === -1) throw new Error('mode not is default')
     },
     mounted: function () {
       // 给节点绑定事件
       this.$refs.handle.addEventListener('mousedown', this.down, false)
+      // 获得滚动区域宽度
+      this.apart = domStyle.get(this.$refs.region, this.modeStyle[this.mode])[0]
+      this.handle = domStyle.get(this.$refs.handle, this.modeStyle[this.mode])[0] / 2
+      // 初始化滚路位置
+      let direct = this.directions[this.mode]
+      this.histAnnals = this.value / this.max * 100
+      this.handleStyle[direct] = 'calc(' + this.histAnnals + '% - ' + this.handle + 'px)'
+
+    },
+    watch: {
+      value: function () {
+        this.handleClass['mu-motioned'] = true
+        if (this.value >= this.max) this.handleClass['mu-motioned'] = false
+        if (this.drapStatus) return
+        // 保留移动距离
+        this.histAnnals = this.value / this.max * 100
+        let direct = this.directions[this.mode]
+        this.handleStyle[direct] = 'calc(' + this.histAnnals + '% - ' + this.handle + 'px)'
+      },
+      deep: true
     },
     methods: {
       up: function () {
+        this.drapStatus = false
         window.removeEventListener('mousemove', this.move, false)
         window.removeEventListener('mouseup', this.up, false)
-        this.value = this.max / this.annals / 100
         this.histAnnals = this.annals
+        // 执行回调
+        lang.isFunction(this.rangeCallBack) && this.rangeCallBack(this.max * this.annals / 100)
       },
       down: function (e) {
         this.handleClass['mu-animation'] = false
@@ -132,6 +176,7 @@
         this.y = e.pageY
       },
       move: function (e) {
+        this.drapStatus = true
         // 获得移动中鼠标位置
         let x = e.pageX
         let y = e.pageY
@@ -158,17 +203,17 @@
           this.annals = x / this.apart * 100
           if (this.annals < 0) this.annals = 0
           if (this.annals > 100) this.annals = 100
-          this.histAnnals = this.annals
-          this.handleStyle.left = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
         } else if (this.mode === 'vertical') {
           this.annals = y / this.apart * 100
           if (this.annals < 0) this.annals = 0
           if (this.annals > 100) this.annals = 100
           this.histAnnals = this.annals
-          this.handleStyle.bottom = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
         }
-        // this.value = this.max / this.annals / 100
-        console.log(this.value)
+        this.histAnnals = this.annals
+        let direct = this.directions[this.mode]
+        this.handleStyle[direct] = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
+        // 执行回调
+        lang.isFunction(this.rangeCallBack) && this.rangeCallBack(this.max * this.annals / 100)
       }
     }
   }
