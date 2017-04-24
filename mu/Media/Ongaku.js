@@ -11,7 +11,8 @@ import xhr from '../xhr'
 export default (function () {
   let type = ['sine', 'square', 'sawtooth', 'triangle', 'custom']
   class Ongaku {
-    constructor () {
+    constructor (params = {}) {
+      if (!lang.isObject(params)) throw new Error('params type not Object')
       // 初始化对象
       try {
         this.ongaku = new (window.AudioContext || window.webkitAudioContext)()
@@ -47,7 +48,12 @@ export default (function () {
         this.playCallBack = () => {}
         // 暂停播放的回调
         this.pauseCallBack = () => {}
+        // 监听播放完成事件
+        this.audio.addEventListener('ended', () => {
+          this.ended()
+        }, false)
         // 初始化一些限制
+        this.autoNext = params.autoNext || true
       } catch (err) {
         throw new Error('!Your browser does not support Web Audio API!')
       }
@@ -211,6 +217,21 @@ export default (function () {
     // 获得当前音乐总时长
     getOngakuTime () {
       return this.audio.duration
+    }
+    // 设置播放事件
+    setPlayTime (value) {
+      this.audio.currentTime = value
+    }
+    // 设置播放器音量
+    setVolume (value) {
+      this.gainNode.gain.value = value
+    }
+    ended () {
+      if (this.autoNext) {
+        if (this.playNumer < this.sources.length - 1) {
+          this.next()
+        }
+      }
     }
   }
   lang.setObject(config.getObjectName('Media.Ongaku'), 1, Ongaku)
