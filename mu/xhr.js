@@ -75,6 +75,8 @@ export default (function () {
     }
     Object.assign(params, options)
     var xhr = new XMLHttpRequest()
+    // 检测缓存中是否已经存在
+
     // 如果域不相同
     let def = new Promise(function (resolve, reject) {
       if (deploy.responseType.indexOf(options.responseType) !== -1) {

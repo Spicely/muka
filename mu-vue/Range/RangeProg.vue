@@ -122,6 +122,11 @@
       rangeCallBack: {
         type: Function,
         default: () => {}
+      },
+      // 拖动时是否允许回调
+      moveStatus: {
+        type: Boolean,
+        default: false
       }
     },
     created: function () {
@@ -140,7 +145,6 @@
       let direct = this.directions[this.mode]
       this.histAnnals = this.value / this.max * 100
       this.handleStyle[direct] = 'calc(' + this.histAnnals + '% - ' + this.handle + 'px)'
-
     },
     watch: {
       value: function () {
@@ -161,7 +165,7 @@
         window.removeEventListener('mouseup', this.up, false)
         this.histAnnals = this.annals
         // 执行回调
-        lang.isFunction(this.rangeCallBack) && this.rangeCallBack(this.max * this.annals / 100)
+        !this.moveStatus && lang.isFunction(this.rangeCallBack) && this.rangeCallBack(this.max * this.annals / 100)
       },
       down: function (e) {
         this.handleClass['mu-animation'] = false
@@ -191,6 +195,8 @@
           if (this.annals > 100) this.annals = 100
           this.handleStyle.bottom = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
         }
+        // 执行回调
+        this.moveStatus && lang.isFunction(this.rangeCallBack) && this.rangeCallBack(this.max * this.annals / 100)
       },
       toDesignat: function (e) {
         this.handleClass['mu-animation'] = true
