@@ -9,7 +9,8 @@ import lang from '../base/lang'
 import xhr from '../xhr'
 
 export default (function () {
-  let type = ['sine', 'square', 'sawtooth', 'triangle', 'custom']
+  // let type = ['sine', 'square', 'sawtooth', 'triangle', 'custom']
+  let playMode = ['list', 'single', 'random']
   class Ongaku {
     constructor (params = {}) {
       if (!lang.isObject(params)) throw new Error('params type not Object')
@@ -36,6 +37,7 @@ export default (function () {
               this.pause()
               val = val < 0 ? 0 : val >= this.sources.length ? this.sources.length - 1 : val
               this.playNumer = val
+              this.setPlayTime(0)
               this.audio.src = this.playKey ? this.sources[this.playConf.playNumer][this.playKey] : this.sources[this.playConf.playNumer]
               this.audio.onerror = function () {
                 throw new Error('File not found')
@@ -52,8 +54,13 @@ export default (function () {
         this.audio.addEventListener('ended', () => {
           this.ended()
         }, false)
+        // 监听错误事件
+        this.audio.addEventListener('error', () => {
+          throw new Error('File not found')
+        }, false)
         // 初始化一些限制
         this.autoNext = params.autoNext || true
+        this.playMode = 'list'
       } catch (err) {
         throw new Error('!Your browser does not support Web Audio API!')
       }
@@ -64,9 +71,6 @@ export default (function () {
       this.sources = arr
       this.playKey = key
       this.audio.src = key ? this.sources[this.playConf.playNumer][key] : this.sources[this.playConf.playNumer]
-      this.audio.onerror = function () {
-        throw new Error('File not found')
-      }
       this.getElementSources(this.audio)
     }
     // 获得来自audio节点的文件
@@ -75,9 +79,10 @@ export default (function () {
         throw new Error('type not is Elememt')
       }
       this.sourceNode = new Promise((resolve, reject) => {
-        var elementSource = this.ongaku.createMediaElementSource(element)
+        if (this.elementSource) return
+        this.elementSource = this.ongaku.createMediaElementSource(element)
         // 连接音频控制
-        elementSource.connect(this.gainNode)
+        this.elementSource.connect(this.gainNode)
         // 连接到设备上
         this.gainNode.connect(this.ongaku.destination)
         resolve()
@@ -189,23 +194,31 @@ export default (function () {
     // 播放
     play () {
       this.sourceNode.then(() => {
-        this.bufferNode ? this.bufferNode.start() : this.audio.play()
+        this.audio.play()
         lang.isFunction(this.playCallBack) && this.playCallBack()
       })
     }
     // 暂停
     pause () {
       this.sourceNode.then(() => {
-        this.bufferNode ? this.bufferNode.stop() : this.audio.pause()
+        this.audio.pause()
         lang.isFunction(this.pauseCallBack) && this.pauseCallBack()
       })
     }
     // 下一曲
     next () {
+      if (this.playMode === 'random') {
+        this.playConf.playNumer = Math.round(Math.random() * this.sources.length)
+        return
+      }
       this.playConf.playNumer++
     }
     // 上一曲
     prev () {
+      if (this.playMode === 'random') {
+        this.playConf.playNumer = Math.round(Math.random() * this.sources.length)
+        return
+      }
       this.playConf.playNumer--
     }
     // 设置音调
@@ -226,9 +239,21 @@ export default (function () {
     setVolume (value) {
       this.gainNode.gain.value = value
     }
+    // 设置播放模式
+    setPlayMode (mode) {
+      if (playMode.indexOf(mode) === -1) {
+        throw new Error('mode not is default')
+      }
+      this.playMode = mode
+    }
+    // 播放完成后的事件
     ended () {
       if (this.autoNext) {
         if (this.playNumer < this.sources.length - 1) {
+          if (this.mode === 'single') {
+            this.playConf.playNumer = this.playConf.playNumer
+            return
+          }
           this.next()
         }
       }
