@@ -8,7 +8,6 @@
 let QRCode = function() {
     if (navigator.mediaDevices) {
         return navigator.mediaDevices.getUserMedia({
-            video: true,
             video: {
                 facingMode: {
                     exact: "environment"
@@ -17,7 +16,6 @@ let QRCode = function() {
         });
     } else if (navigator.getUserMedia) {
         return navigator.getUserMedia({
-            video: true,
             video: {
                 facingMode: {
                     exact: "environment"
