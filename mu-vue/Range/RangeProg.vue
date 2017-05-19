@@ -24,6 +24,7 @@
       height: 5px;
       border-radius: 5px;
       background: white;
+      position: relative;
       .mu-animation {
         transition: all 0.2s cubic-bezier(0.4, 0, 1, 1);
       }
@@ -36,9 +37,7 @@
         background-color: #53e3a6;
         border-radius: 50%;
         cursor: pointer;
-        top: -3.5px;
-        float: left;
-        position: relative;
+        position: absolute;
       }
       .muVerticalProg {}
       .mu-range-handle::after {
@@ -100,7 +99,7 @@
         // 控制器拖拽位置
         handleStyle: {
           left: '0%',
-          top: '0%'
+          bottom: '0%'
         },
         // 初始化控制拖拽剧中位置
         handleInit: {
@@ -109,7 +108,7 @@
         },
         directions: {
           side: 'left',
-          vertical: 'top'
+          vertical: 'bottom'
         },
         handleClass: {
           'mu-animation': false,
@@ -182,6 +181,7 @@
         window.removeEventListener('mousemove', this.move, false)
         window.removeEventListener('mouseup', this.up, false)
         this.histAnnals = this.annals
+        if (this.mode === 'vertical') this.histAnnals = 100 - this.annals
         // 执行回调
         !this.moveStatus && lang.isFunction(this.rangeCallBack) && this.rangeCallBack(this.max * this.annals / 100)
       },
@@ -204,15 +204,13 @@
         let y = e.pageY
         if (this.mode === 'side') {
           this.annals = (x - this.x) / this.apart * 100 + this.histAnnals
-          if (this.annals < 0) this.annals = 0
-          if (this.annals > 100) this.annals = 100
-          this.handleStyle.left = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
         } else if (this.mode === 'vertical') {
-          this.annals = (y - this.y) / this.apart * 100 + this.histAnnals
-          if (this.annals < 0) this.annals = 0
-          if (this.annals > 100) this.annals = 100
-          this.handleStyle.top = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
+          this.annals = 100 - ((y - this.y) / this.apart * 100 + this.histAnnals)
         }
+        if (this.annals < 0) this.annals = 0
+        if (this.annals > 100) this.annals = 100
+        let direct = this.directions[this.mode]
+        this.handleStyle[direct] = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
         // 执行回调
         this.moveStatus && lang.isFunction(this.rangeCallBack) && this.rangeCallBack(this.max * this.annals / 100)
       },
@@ -225,15 +223,13 @@
         this.handle = domStyle.get(this.$refs.handle, this.modeStyle[this.mode])[0] / 2
         if (this.mode === 'side') {
           this.annals = x / this.apart * 100
-          if (this.annals < 0) this.annals = 0
-          if (this.annals > 100) this.annals = 100
         } else if (this.mode === 'vertical') {
-          this.annals = y / this.apart * 100
-          if (this.annals < 0) this.annals = 0
-          if (this.annals > 100) this.annals = 100
-          this.histAnnals = this.annals
+          this.annals = (1 - y / this.apart) * 100
         }
+        if (this.annals < 0) this.annals = 0
+        if (this.annals > 100) this.annals = 100
         this.histAnnals = this.annals
+        if (this.mode === 'vertical') this.histAnnals = 100 - this.annals
         let direct = this.directions[this.mode]
         this.handleStyle[direct] = 'calc(' + this.annals + '% - ' + this.handle + 'px)'
         // 执行回调
