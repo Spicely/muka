@@ -26,6 +26,7 @@
    *   name Spicely
    *   email Spicely@outlook.com
    */
+  import lang from '../../mu/base/lang'
   export default {
     render: function (createElement) {
       let option = []
@@ -36,6 +37,11 @@
         },
         domProps: {
           innerHTML: this.label
+        },
+        on: {
+          click: () => {
+            lang.isFunction(this.event) && this.event()
+          }
         }
       }, [this.$slots.default]))
       // 拖动节点
@@ -61,6 +67,9 @@
       label: {
         type: String,
         default: ''
+      },
+      event: {
+        default: function () {}
       }
     }
   }
