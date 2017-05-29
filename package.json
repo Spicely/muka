@@ -1,0 +1,19 @@
+{
+    "name": "muka",
+    "version": "1.0.0",
+    "description": "基本组件",
+    "main": "muka.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Spicely/muKa.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Spicely/muKa/issues"
+    },
+    "homepage": "https://github.com/Spicely/muKa#readme"
+}
