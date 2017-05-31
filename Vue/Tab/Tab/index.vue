@@ -1,5 +1,5 @@
 <template>
-  <div class="muTab" :class="style" @click="listenHandle">
+  <div class="muTab" :class="style">
     <slot></slot>
   </div>
 </template>
@@ -18,6 +18,9 @@
   import 'muka/Less/index.less'
   export default {
     name: 'Tab',
+    created: function () {
+      this.init()
+    },
     data: function () {
       return {
         style: {
@@ -29,12 +32,33 @@
       fixed: {
         type: Boolean,
         default: false
+      },
+      selectId: {
+        type: String,
+        default: ''
       }
     },
-    methods:{
-        listenHandle:function(){
-            console.log(this.$children)
+    methods: {
+      init: function () {
+        if (this.selectId) {
+          this.$children.forEach(function (VueComponent) {
+            if (VueComponent.id !== this.selectId) {
+              VueComponent.selected = false
+            } else {
+              VueComponent.selected = true
+            }
+          }, this);
         }
+      },
+      setSelected: function (id) {
+        this.$children.forEach(function (VueComponent) {
+          if (VueComponent._uid !== id) {
+            VueComponent.selected = false
+          } else {
+            VueComponent.selected = true
+          }
+        }, this);
+      }
     }
   }
 

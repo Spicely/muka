@@ -19,13 +19,22 @@
     .barLable {
       height: 40%;
     }
+    .none {
+      display: none;
+    }
+  }
+
+  .selected {
+    color: red;
   }
 
 </style>
 
 <script>
+  import lang from 'muka/Base/lang'
   export default {
     name: 'Tab-Bar',
+    created: function(){},
     // 初始化页面 
     // h 为createElement
     render: function (h) {
@@ -33,9 +42,15 @@
       // 如果传递了图片
       if (this.$slots.icon) {
         arr.push(h('div', {
-          class: 'barIcon'
+          class: this.iconStyle
         }, this.$slots.icon))
       }
+      if (this.$slots.replaceIcon) {
+        arr.push(h('div', {
+          class: this.replaceIconStyle
+        }, this.$slots.replaceIcon))
+      }
+      console.log(arr)
       // 如果传递了文字
       if (this.$slots.label) {
         arr.push(h('div', {
@@ -43,13 +58,54 @@
         }, this.$slots.label))
       }
       return h('div', {
-        class: 'muTabBar',
-        on:{
-            click: ()=>{
-                console.log(this)
-            }
+        class: this.barStyle,
+        on: {
+          click: this.handle
         }
       }, arr)
+    },
+    watch: {
+      selected: function (curVal) {
+        if (curVal) {
+          this.barStyle['selected'] = true
+          if (this.$slots.replaceIcon) {
+            this.iconStyle['none'] = true
+            this.replaceIconStyle['none'] = false
+          }
+        } else {
+          this.barStyle['selected'] = false
+          this.iconStyle['none'] = false
+          this.replaceIconStyle['none'] = true
+        }
+      }
+    },
+    data: function () {
+      return {
+        selected: false,
+        barStyle: {
+          'muTabBar': true,
+          'selected': this.selected
+        },
+        iconStyle: {
+          'barIcon': true,
+          'none': this.$slots.replaceIcon ? this.selected : false
+        },
+        replaceIconStyle: {
+          'barIcon': true,
+          'none': !this.selected
+        }
+      }
+    },
+    props: {
+      id: {
+        type: String,
+        default: ''
+      }
+    },
+    methods: {
+      handle: function () {
+        this.$parent.setSelected(this._uid)
+      }
     }
   }
 
