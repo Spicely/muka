@@ -1,6 +1,9 @@
 import Tab from './Tab/'
 import TabBar from './TabBar/'
-export {
+
+
+
+export default {
   Tab,
   TabBar
 }
