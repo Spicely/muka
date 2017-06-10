@@ -1,4 +1,3 @@
-'use strict'
 /**
  * Create Time 2017/04/12
  * Write Name Spicely

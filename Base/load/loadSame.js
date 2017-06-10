@@ -2,7 +2,6 @@
  * create time 2017/02/04
  * email Spicely@outlook.com
  */
-'use strict'
 
 import lang from '../base/lang.js'
 let loadSame = function(path = [], waiting = () => {}) {
