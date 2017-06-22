@@ -11,7 +11,8 @@ import json from './json'
 
 let globalInit = {
   baseUrl: '',
-  headers: {}
+  headers: {},
+  error: () => {}
 }
 let xhr = function (url, options = {}) {
   if (!url) throw new Error('No request path is set')
@@ -37,7 +38,9 @@ let xhr = function (url, options = {}) {
   //     }
   //   }
   // }
-  return fetch(reqAddress, init)
+  return fetch(reqAddress, init).catch(_ => {
+    lang.isFunction(init.error) && init.error()
+  })
 }
 xhr.config = function (options) {
   if (options) {
