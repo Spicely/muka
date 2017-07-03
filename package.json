@@ -1,0 +1,22 @@
+{
+  "name": "muka",
+  "version": "0.0.2",
+  "description": "一个用于原生js 基于es6编写的常用方法处理",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "es6"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spicely/muka.git"
+  },
+  "author": "Spicely",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Spicely/muka/issues"
+  },
+  "homepage": "https://github.com/Spicely/muka#readme"
+}
