@@ -1,6 +1,6 @@
 {
   "name": "muka",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "一个用于原生js 基于es6编写的常用方法处理",
   "main": "index.js",
   "scripts": {
