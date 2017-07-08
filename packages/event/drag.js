@@ -22,7 +22,7 @@ if (browser.isMobile) {
     event = ['mousemove', 'mouseup']
 }
 
-function mouseDrag(e, optins = {}) {
+function drag(e, optins = {}) {
     e = e.originalEvent || e
     if (!lang.isElement(e.target)) {
         throw new Error('type not is Element')
@@ -55,5 +55,5 @@ function end(e) {
     window.removeEventListener(event[0], move, false)
     window.removeEventListener(event[1], end, false)
 }
-lang.setObject(config.getObjectName('event.mouseDrag'), 1, mouseDrag)
-export default mouseDrag
+lang.setObject(config.getObjectName('event.drag'), 1, drag)
+export default drag

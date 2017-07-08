@@ -3,7 +3,7 @@
  * Write Name Shackles Butterfly
  * Email ShackButter@outlook.com
  */
-let config = Object.create(null, {
+export default Object.create(null, {
     baseName: {
         value: 'muka'
     },
@@ -26,4 +26,3 @@ let config = Object.create(null, {
         value: document
     }
 })
-export default config

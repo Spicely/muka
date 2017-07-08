@@ -1,26 +1,49 @@
 {
-  "name": "muka",
-  "version": "0.0.3",
-  "description": "一个用于原生js 基于es6编写的常用方法处理",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "_from": "muka@0.0.2",
+  "_id": "muka@0.0.2",
+  "_inBundle": false,
+  "_integrity": "sha1-fj1BazT7zjTYJGRywAfZ0PQMXhU=",
+  "_location": "/muka",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "muka@0.0.2",
+    "name": "muka",
+    "escapedName": "muka",
+    "rawSpec": "0.0.2",
+    "saveSpec": null,
+    "fetchSpec": "0.0.2"
   },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "http://registry.npm.taobao.org/muka/download/muka-0.0.2.tgz",
+  "_shasum": "7e3d416b34fbce34d8246472c007d9d0f40c5e15",
+  "_spec": "muka@0.0.2",
+  "_where": "H:\\area\\moki",
+  "author": {
+    "name": "Spicely"
+  },
+  "bugs": {
+    "url": "https://github.com/Spicely/muka/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "一个用于原生js 基于es6编写的常用方法处理",
+  "homepage": "https://github.com/Spicely/muka#readme",
   "keywords": [
     "es6"
   ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "muka",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Spicely/muka.git"
   },
-  "author": "Spicely",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Spicely/muka/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/Spicely/muka#readme",
-  "dependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^4.1.1"
-  }
+  "version": "0.0.3"
 }
