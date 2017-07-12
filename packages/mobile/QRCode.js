@@ -5,7 +5,7 @@
  *  notes
  *      提供二维码扫描接口
  */
-let QRCode = function() {
+let QRCode = function () {
     if (navigator.mediaDevices) {
         return navigator.mediaDevices.getUserMedia({
             video: {

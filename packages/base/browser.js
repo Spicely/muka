@@ -68,7 +68,7 @@ let browser = Object.create(null, {
             }
             let arr = search.split('&')
             let obj = {}
-            arr.map(function(item) {
+            arr.map(function (item) {
                 let tmpArr = item.split('=')
                 obj[decodeURIComponent(tmpArr[0])] = decodeURIComponent(tmpArr[1])
             })
@@ -76,7 +76,7 @@ let browser = Object.create(null, {
         }
     },
     localStorage: {
-        value: function(...arg) {
+        value: function (...arg) {
             if (arg.length === 1) {
                 return localStorage.getItem(arg[0]) || ''
             } else if (arg.length === 2) {

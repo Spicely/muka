@@ -11,6 +11,8 @@ let init = {
     Y: 0,
     _x: 0,
     _y: 0,
+    toX: 0,
+    toY: 0,
     handleMove: () => {},
     handleEnd: () => {}
 }
@@ -31,9 +33,13 @@ function drag(e, optins = {}) {
     // 保留初始值
     init._x = e.screenX || e.targetTouches[0].screenX
     init._y = e.screenY || e.targetTouches[0].screenY
-    // 监听移动、释放事件
-    window.addEventListener(event[0], move, false)
-    window.addEventListener(event[1], end, false)
+    // 监听移动、释放事件11
+    window.addEventListener(event[0], move, {
+        passive: false
+    })
+    window.addEventListener(event[1], end, {
+        passive: false
+    })
 }
 
 function move(e) {
@@ -42,18 +48,20 @@ function move(e) {
     let y = e.screenY || e.targetTouches[0].screenY
     let _x = init.X + (x - init._x)
     let _y = init.Y + (y - init._y)
+    init.toX = _x
+    init.toY = _y
     lang.isFunction(init.handleMove) && init.handleMove(_x, _y)
+    e.preventDefault()
 }
 
-function end(e) {
-    e = e.originalEvent || e
-    let x = e.screenX || 0
-    let y = e.screenY || 0
-    let _x = init.X + (x - init._x)
-    let _y = init.Y + (y - init._y)
-    lang.isFunction(init.handleMove) && init.handleEnd(_x, _y)
-    window.removeEventListener(event[0], move, false)
-    window.removeEventListener(event[1], end, false)
+function end() {
+    lang.isFunction(init.handleMove) && init.handleEnd(init.toX, init.toY)
+    window.removeEventListener(event[0], move, {
+        passive: false
+    })
+    window.removeEventListener(event[1], end, {
+        passive: false
+    })
 }
 lang.setObject(config.getObjectName('event.drag'), 1, drag)
 export default drag

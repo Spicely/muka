@@ -4,7 +4,7 @@
  */
 
 import lang from '../base/lang.js'
-let loadSame = function(path = [], waiting = () => {}) {
+let loadSame = function (path = [], waiting = () => {}) {
     if (!lang.isArray(path)) {
         throw new Error('Path can only be array')
     }
@@ -12,13 +12,13 @@ let loadSame = function(path = [], waiting = () => {}) {
     if (lang.isFunction(waiting)) {
         waiting.call(this)
     }
-    return new Promise(function(resolve, reject) {
-        resolve(path.map(function(item) {
-            return fetch(item).then(function(response) {
+    return new Promise(function (resolve, reject) {
+        resolve(path.map(function (item) {
+            return fetch(item).then(function (response) {
                 return response.blob()
-            }).then(function(response) {
+            }).then(function (response) {
                 return URL.createObjectURL(response)
-            }).catch(function() {
+            }).catch(function () {
                 reject('load error')
             })
         }))
