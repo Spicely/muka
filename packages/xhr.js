@@ -12,14 +12,17 @@ import json from './json'
 let globalInit = {
     baseUrl: '',
     headers: {},
-    credentials: 'include',
-    error: () => {}
+    credentials: 'include', // omit same-origin include
+    error: () => {},
+    success: () => {},
+    timeOut: 0
 }
-let xhr = function (url, options = {}) {
+let xhr = (url, options = {}) => {
     if (!url) throw new Error('No request path is set')
-    if (!lang.isObject(options)) throw new Error('Arguments can only be object')
+    if (!lang.isObject(options)) throw new Error('Arguments can only be Object')
     let reqAddress = globalInit.baseUrl + url
     let init = Object.assign(json.clone(globalInit), options)
+    if (!lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
     // // 如果使用POST传递数据这里把数据转成FormData
     // if (options.body && !lang.isFormData(options.body) && lang.isObject(options.body)) {
     //   let formData = new FormData()
@@ -39,9 +42,28 @@ let xhr = function (url, options = {}) {
     //     }
     //   }
     // }
-    return fetch(reqAddress, init).catch(_ => {
-        lang.isFunction(init.error) && init.error()
+    let fetchPromise = new Promise((resolve, reject) => {
+        this.breakSignal = function () {
+            reject(new Error('Break'))
+        }
+        let _fetch = fetch(reqAddress, init)
+        let promises = [_fetch]
+        // 超时设置
+        if (init.timeOut) {
+            promises.push(new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject(new Error('timeout'))
+                }, init.timeOut)
+            }))
+        }
+        Promise.race(promises).then(data => lang.isFunction(init.success) ? init.success.call(this, data) : data)
+            .then(data => resolve(data))
+            .catch(error => {
+                lang.isFunction(init.error) && init.error()
+            })
     })
+
+    return fetchPromise
 }
 xhr.config = function (options) {
     if (options) {
