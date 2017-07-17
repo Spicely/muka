@@ -43,9 +43,6 @@ let xhr = (url, options = {}) => {
     //   }
     // }
     let fetchPromise = new Promise((resolve, reject) => {
-        this.breakSignal = function () {
-            reject(new Error('Break'))
-        }
         let _fetch = fetch(reqAddress, init)
         let promises = [_fetch]
         // 超时设置
@@ -56,7 +53,7 @@ let xhr = (url, options = {}) => {
                 }, init.timeOut)
             }))
         }
-        Promise.race(promises).then(data => lang.isFunction(init.success) ? init.success.call(this, data) : data)
+        Promise.race(promises).then(data => lang.isFunction(init.success) ? init.success.call(this, data, reject) : data)
             .then(data => resolve(data))
             .catch(error => {
                 lang.isFunction(init.error) && init.error()
