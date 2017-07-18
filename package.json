@@ -1,26 +1,32 @@
 {
-  "_from": "muka@0.0.4",
-  "_id": "muka@0.0.4",
+  "_args": [
+    [
+      "muka@0.0.6",
+      "D:\\www\\youba-vue-mobile"
+    ]
+  ],
+  "_from": "muka@0.0.6",
+  "_id": "muka@0.0.6",
   "_inBundle": false,
-  "_integrity": "sha512-grK96rClcjTe1oVd1kcvEFZ3nOO27N/eid8AjEEA0G9oF7ZGFpRB/ZkBjxGX6Cxare6GdD2p2CgC3POtvrnNwA==",
+  "_integrity": "sha512-XykbMS9Olsqcva7hkcTyX5FjteZL+dUMMHMiME+wvi1qdfWWpmZ9QX1bqxrIWkkzQ6Q79SC8BktSe6HwqjBXmw==",
   "_location": "/muka",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "muka@0.0.4",
+    "raw": "muka@0.0.6",
     "name": "muka",
     "escapedName": "muka",
-    "rawSpec": "0.0.4",
+    "rawSpec": "0.0.6",
     "saveSpec": null,
-    "fetchSpec": "0.0.4"
+    "fetchSpec": "0.0.6"
   },
   "_requiredBy": [
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/muka/-/muka-0.0.4.tgz",
+  "_resolved": "https://registry.npmjs.org/muka/-/muka-0.0.6.tgz",
   "_shasum": "4137f26ac423fa58e0c9d1179f756ed4b35aa49e",
-  "_spec": "muka@0.0.4",
+  "_spec": "0.0.6",
   "_where": "D:\\www\\youba-vue-mobile",
   "author": {
     "name": "Spicely"
