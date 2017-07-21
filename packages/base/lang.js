@@ -276,6 +276,22 @@ let lang = Object.create(null, {
             }
             return obj
         }
+    },
+    /**
+     *    @param obj 数据对象
+     *    @param key 指定修改对像值为true
+     *    docs
+     *        将对像里的所有值转变成Boolean 并设置为false
+     */
+    entirety: {
+        value: function (obj, key) {
+            if (!this.isObject(obj)) throw new Error('obj not is Object')
+            for (let i in obj) {
+                if (i === key) obj[i] = true
+                else obj[i] = false
+            }
+            return obj
+        }
     }
 })
 lang.setObject(config.getObjectName('base.lang'), 1, lang)

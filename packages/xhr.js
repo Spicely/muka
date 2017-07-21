@@ -17,12 +17,30 @@ let globalInit = {
     success: () => {},
     timeOut: 0
 }
-let xhr = (url, options = {}) => {
+let xhr = (...arg) => {
+    let url = ''
+    let options = {}
+    let mixin = true
+    if (arg.length === 1) {
+        url = arg[0]
+    } else if (arg.length === 2) {
+        url = arg[0]
+        if (lang.isObject(arg[1])) {
+            options = arg[1]
+        } else {
+            mixin = arg[1]
+        }
+    } else if (arg.length === 3) {
+        url = arg[0]
+        options = arg[1]
+        mixin = arg[2]
+    }
     if (!url) throw new Error('No request path is set')
     if (!lang.isObject(options)) throw new Error('Arguments can only be Object')
+
     let reqAddress = globalInit.baseUrl + url
-    let init = Object.assign(json.clone(globalInit), options)
-    if (!lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
+    let init = mixin ? Object.assign(json.clone(globalInit), options) : options
+    if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
     // // 如果使用POST传递数据这里把数据转成FormData
     // if (options.body && !lang.isFormData(options.body) && lang.isObject(options.body)) {
     //   let formData = new FormData()
@@ -43,9 +61,6 @@ let xhr = (url, options = {}) => {
     //   }
     // }
     let fetchPromise = new Promise((resolve, reject) => {
-        this.breakSignal = function () {
-            reject(new Error('Break'))
-        }
         let _fetch = fetch(reqAddress, init)
         let promises = [_fetch]
         // 超时设置
@@ -56,10 +71,10 @@ let xhr = (url, options = {}) => {
                 }, init.timeOut)
             }))
         }
-        Promise.race(promises).then(data => lang.isFunction(init.success) ? init.success.call(this, data) : data)
+        Promise.race(promises).then(data => lang.isFunction(init.success) ? init.success.call(this, data, reject) : data)
             .then(data => resolve(data))
             .catch(error => {
-                lang.isFunction(init.error) && init.error()
+                lang.isFunction(init.error) && init.error(error)
             })
     })
 
