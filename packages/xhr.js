@@ -13,6 +13,7 @@ let globalInit = {
     baseUrl: '',
     headers: {},
     credentials: 'include', // omit same-origin include
+    before: () => {},
     error: () => {},
     success: () => {},
     timeOut: 0
@@ -60,6 +61,7 @@ let xhr = (...arg) => {
     //     }
     //   }
     // }
+    lang.isFunction(init.before) && init.before()
     let fetchPromise = new Promise((resolve, reject) => {
         let _fetch = fetch(reqAddress, init)
         let promises = [_fetch]
