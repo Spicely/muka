@@ -39,7 +39,8 @@ let xhr = (...arg) => {
     if (!url) throw new Error('No request path is set')
     if (!lang.isObject(options)) throw new Error('Arguments can only be Object')
 
-    let reqAddress = globalInit.baseUrl + url
+    let reqAddress = mixin ? globalInit.baseUrl + url : url
+ 
     let init = mixin ? Object.assign(json.clone(globalInit), options) : options
     if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
     // // 如果使用POST传递数据这里把数据转成FormData
