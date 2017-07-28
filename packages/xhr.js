@@ -9,6 +9,13 @@ import config from './config'
 import lang from './Base/lang'
 import json from './json'
 
+
+/** globalInit
+ *  @param baseUrl  前缀地址 用于和传递过的路径合并
+ *  @param headers  fetch中的参数
+ *  @param msg      用于显示操作类请求成功状态
+ */
+
 let globalInit = {
     baseUrl: '',
     headers: {},
@@ -16,7 +23,9 @@ let globalInit = {
     before: () => {},
     error: () => {},
     success: () => {},
-    timeOut: 0
+    timeOut: 0,
+    msg: false,
+    loading: true
 }
 let xhr = (...arg) => {
     let url = ''
@@ -40,7 +49,7 @@ let xhr = (...arg) => {
     if (!lang.isObject(options)) throw new Error('Arguments can only be Object')
 
     let reqAddress = mixin ? globalInit.baseUrl + url : url
- 
+
     let init = mixin ? Object.assign(json.clone(globalInit), options) : options
     if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
     // // 如果使用POST传递数据这里把数据转成FormData
@@ -62,7 +71,7 @@ let xhr = (...arg) => {
     //     }
     //   }
     // }
-    lang.isFunction(init.before) && init.before()
+    lang.isFunction(init.before) && init.before(init.loading)
     let fetchPromise = new Promise((resolve, reject) => {
         let _fetch = fetch(reqAddress, init)
         let promises = [_fetch]
@@ -74,7 +83,7 @@ let xhr = (...arg) => {
                 }, init.timeOut)
             }))
         }
-        Promise.race(promises).then(data => lang.isFunction(init.success) ? init.success.call(this, data, reject) : data)
+        Promise.race(promises).then(data => lang.isFunction(init.success) ? init.success.call(this, data, reject, init.msg) : data)
             .then(data => resolve(data))
             .catch(error => {
                 lang.isFunction(init.error) && init.error(error)
