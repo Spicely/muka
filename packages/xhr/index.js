@@ -20,9 +20,9 @@ let globalInit = {
     baseUrl: '',
     headers: {},
     credentials: 'include', // omit same-origin include
-    before: () => {},
-    error: () => {},
-    success: () => {},
+    before: null,
+    error: null,
+    success: null,
     timeOut: 0,
     msg: false,
     loading: true
