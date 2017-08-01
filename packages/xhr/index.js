@@ -25,7 +25,8 @@ let globalInit = {
     success: null,
     timeOut: 0,
     msg: false,
-    loading: true
+    loading: true,
+    toType: '' // JSON from
 }
 let xhr = (...arg) => {
     let url = ''
@@ -72,6 +73,7 @@ let xhr = (...arg) => {
     //   }
     // }
     lang.isFunction(init.before) && init.before(init.loading)
+    init.body = xhr.toType(init.body, init.toType)
     let fetchPromise = new Promise((resolve, reject) => {
         let _fetch = fetch(reqAddress, init)
         let promises = [_fetch]
@@ -98,6 +100,26 @@ xhr.config = function (options) {
         return globalInit
     } else {
         return globalInit
+    }
+}
+xhr.toType = function (data, type = '') {
+    if (!lang.isObject(data)) return
+    if (type.toLocaleUpperCase() === 'JSON') {
+        try {
+            return JSON.stringify(data)
+        } catch (e) {
+            return data
+        }
+    } else if (type.toLocaleUpperCase() === 'FORM') {
+        try {
+            let str = ''
+            for (let i in data) {
+                str += i + '=' + data[i] + '&'
+            }
+            return str.substring(0, str.length - 1)
+        } catch (e) {
+            return data
+        }
     }
 }
 lang.setObject(config.getObjectName('xhr'), 1, xhr)
