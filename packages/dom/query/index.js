@@ -3,8 +3,8 @@
  * Write Name Spicely
  * Email Spicely@outlook.com
  */
-import config from '../config'
-import lang from '../base/lang'
+import config from '../../config'
+import lang from '../../base/lang'
 let query = (selector, context) => {
     if (context) {
         // 必须是节点 而且长度为undefined

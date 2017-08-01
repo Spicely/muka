@@ -15,7 +15,6 @@ let init = {
     toY: 0, // 到达位置
     moveX: 0,
     moveY: 0, // 移动距离
-    time: 0,
     moveStatus: false,
     status: true,
     dir_x: 0, // -1 左 0 未移动 1 右
@@ -31,12 +30,6 @@ if (browser.isMobile) {
     event = ['mousemove', 'mouseup']
 }
 
-function animate() {
-    if (init.status) {
-        init.time++
-            requestAnimationFrame(animate)
-    }
-}
 
 function drag(e, optins = {}) {
     e = e.originalEvent || e
@@ -51,14 +44,12 @@ function drag(e, optins = {}) {
     init._x = e.screenX || (e.targetTouches ? e.targetTouches[0].screenX : 0)
     init._y = e.screenY || (e.targetTouches ? e.targetTouches[0].screenY : 0)
     // 监听移动、释放事件11
-    window.addEventListener(event[0], move, {
+    e.target.addEventListener(event[0], move, {
         passive: false
     })
-    window.addEventListener(event[1], end, {
+    e.target.addEventListener(event[1], end, {
         passive: false
     })
-    // 开始计时
-    animate()
 }
 
 function move(e) {
@@ -88,20 +79,21 @@ function move(e) {
     }
     lang.isFunction(init.handleMove) && init.handleMove(_x, _y, {
         x: init.dir_x,
-        y: init.dir_y
+        y: init.dir_y,
+        target: e
     })
     e.preventDefault()
 }
 
-function end() {
+function end(e) {
     init.status = false
-    cancelAnimationFrame(animate)
     lang.isFunction(init.handleMove) && init.handleEnd(init.moveStatus ? init.toX : init.X, init.moveStatus ? init.toY : init.Y, {
         x: init.dir_x,
         y: init.dir_y,
         moveX: init.moveX,
         moveY: init.moveY,
-        time: init.time
+        time: init.time,
+        target: e
     })
     window.removeEventListener(event[0], move, {
         passive: false

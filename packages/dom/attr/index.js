@@ -3,9 +3,9 @@
  * Write Name Spicely
  * Email Spicely@outlook.com
  */
-import config from '../config';
-import lang from '../base/lang';
-import query from './query';
+import config from '../../config';
+import lang from '../../base/lang';
+import query from '../query';
 let alias = lang.create({
     classname: 'class'
 });
@@ -33,13 +33,13 @@ let domAttr = lang.create({
         });
     },
     get(node, name) {
-        return query.only(node).getAttribute(alias[name.toLowerCase()] || name) || '';
+        return query(node).getAttribute(alias[name.toLowerCase()] || name) || '';
     },
     remove(node, name) {
-        query.only(node).removeAttribute(alias[name.toLowerCase()] || name);
+        query(node).removeAttribute(alias[name.toLowerCase()] || name);
     },
     has(node, name) {
-        return query.only(node).hasAtteribute(alias[name.toLowerCase()] || name);
+        return query(node).hasAtteribute(alias[name.toLowerCase()] || name);
     }
 });
 lang.setObject(config.getObjectName('dom.attr'), 1, domAttr);
