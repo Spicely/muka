@@ -26,7 +26,7 @@ let globalInit = {
     timeOut: 0,
     msg: false,
     loading: true,
-    toType: '' // JSON from
+    toType: '' // JSON FORM
 }
 let xhr = (...arg) => {
     let url = ''
@@ -103,23 +103,20 @@ xhr.config = function (options) {
     }
 }
 xhr.toType = function (data, type = '') {
-    if (!lang.isObject(data)) return
-    if (type.toLocaleUpperCase() === 'JSON') {
-        try {
+    if (!lang.isObject(data)) return data
+    if (!type) return data
+    try {
+        if (type.toLocaleUpperCase() === 'JSON') {
             return JSON.stringify(data)
-        } catch (e) {
-            return data
-        }
-    } else if (type.toLocaleUpperCase() === 'FORM') {
-        try {
+        } else if (type.toLocaleUpperCase() === 'FORM') {
             let str = ''
             for (let i in data) {
                 str += i + '=' + data[i] + '&'
             }
             return str.substring(0, str.length - 1)
-        } catch (e) {
-            return data
         }
+    } catch (e) {
+        return data
     }
 }
 lang.setObject(config.getObjectName('xhr'), 1, xhr)
