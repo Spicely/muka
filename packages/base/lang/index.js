@@ -12,7 +12,7 @@ import config from '../../config'
  * @param  {[type]} object  [description]
  * @return {[type]}         [description]
  */
-let getProp = function (parts, create, content) {
+function getProp(parts, create, content) {
     let part = create ? content || config.global : content || {}
     try {
         for (let i = 0; i < parts.length; i++) {
@@ -26,11 +26,11 @@ let getProp = function (parts, create, content) {
             }
             part = part[p]
         }
-        return part
     } catch (e) {
         throw new Error(e)
     }
-}
+    return part
+};
 
 let lang = Object.create(null, {
     // 检查对象类型
