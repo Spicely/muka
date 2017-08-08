@@ -3,7 +3,7 @@
  * Write Name Spicely
  * Email Spicely@outlook.com
  */
-import config from '../../config'
+import config from '../config'
 /**
  * 用于创建设置获取对对象
  * @param  {[type]} parts   [description]

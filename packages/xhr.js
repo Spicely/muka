@@ -5,9 +5,9 @@
  *  Exp
  *      提供config方法用于配置在发送请求前的处理
  */
-import config from '../config'
-import lang from '../Base/lang'
-import json from '../json'
+import config from './config'
+import lang from './base/lang'
+import json from './json'
 
 
 /** globalInit
