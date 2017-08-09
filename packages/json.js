@@ -6,7 +6,7 @@
  *      提供config方法用于配置在发送请求前的处理
  */
 import config from './config'
-import lang from './Base/lang'
+import lang from './base/lang'
 const json = lang.create({
     clone: function (obj) {
         if (!lang.isObject(obj)) throw new Error('Only Object')
