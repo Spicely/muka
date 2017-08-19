@@ -24,9 +24,9 @@ let domStyle = lang.create({
     },
     get(node, name) {
         let values = query(node).map((item) => {
-            let value = config.global.getComputedStyle(item)[name] || node[name]
+            let value = config.global.getComputedStyle(item, null)[name] || item[name]
             if (value) {
-                return lang.isNumber(value) ? value : value.indexOf('px') === -1 ? value : parseInt(value)
+                return lang.isNumber(value) ? value : !value.includes('px') ? value : parseInt(value)
             } else {
                 return ''
             }
