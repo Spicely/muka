@@ -4,7 +4,7 @@ import domAttr from './lib/domAttr'
 import domStyle from './lib/domStyle'
 import drag from './lib/drag'
 import lang from './lib/lang'
-import scroll from './lib/scroll'
+import mScroll from './lib/scroll'
 
 export {
     xhr,
@@ -13,5 +13,5 @@ export {
     domAttr,
     domStyle,
     lang,
-    scroll
+    mScroll
 }
