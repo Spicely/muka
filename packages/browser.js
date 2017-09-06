@@ -4,6 +4,7 @@
  * Email ShackButter@outlook.com
  */
 import config from './config'
+import lang from './base/lang'
 let browser = Object.create(null, {
     // 浏览器可见高度
     height: {
@@ -78,7 +79,13 @@ let browser = Object.create(null, {
     localStorage: {
         value: function (...arg) {
             if (arg.length === 1) {
-                return localStorage.getItem(arg[0]) || ''
+                if (lang.isObject(arg[0]) || lang.isArray(arg[0])) {
+                    for (let i in arg[0]) {
+                        localStorage.setItem(i, arg[0][i])
+                    }
+                } else {
+                    return localStorage.getItem(arg[0]) || ''
+                }
             } else if (arg.length === 2) {
                 localStorage.setItem(arg[0], arg[1])
             } else {

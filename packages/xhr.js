@@ -26,7 +26,8 @@ let globalInit = {
     timeOut: 0,
     msg: false,
     loading: true,
-    toType: '' // JSON FORM
+    dataType: '' // JSON FORM
+    // mode : 'cors'
 }
 let xhr = (...arg) => {
     let url = ''
@@ -50,30 +51,14 @@ let xhr = (...arg) => {
     if (!lang.isObject(options)) throw new Error('Arguments can only be Object')
 
     let reqAddress = mixin ? globalInit.baseUrl + url : url
-
-    let init = mixin ? Object.assign(json.clone(globalInit), options) : options
+    let init = mixin ? json.assign(json.clone(globalInit), options) : options
     if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
-    // // 如果使用POST传递数据这里把数据转成FormData
-    // if (options.body && !lang.isFormData(options.body) && lang.isObject(options.body)) {
-    //   let formData = new FormData()
-    //   for (let i in options.body) {
-    //     formData.append(i, options.body[i])
-    //   }
-    //   options.body = formData
-    //   options.method = 'POST'
-    //   // 设置请求头 默认不上传文件内容
-    //   if (options.type === 'file') {
-    //     options.headers = {
-    //       'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryZpsWTsOiRHI0TBW7'
-    //     }
-    //   } else {
-    //     options.headers = {
-    //       'Content-Type': 'application/x-www-form-urlencoded'
-    //     }
-    //   }
-    // }
     lang.isFunction(init.before) && init.before(init.loading)
-    init.body = xhr.toType(init.body, init.toType)
+    init.body = xhr.toType(init.body, init.dataType)
+    // 增加发送头
+    if (init.dataType.toLocaleUpperCase() === 'FORM') {
+        init.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+    }
     let fetchPromise = new Promise((resolve, reject) => {
         let _fetch = fetch(reqAddress, init)
         let promises = [_fetch]
@@ -102,6 +87,19 @@ xhr.config = function (options) {
         return globalInit
     }
 }
+
+// 深度设置键值
+const setForm = function (str = '', value, k) {
+    for (let key in value) {
+        if (lang.isObject(value[key]) || lang.isArray(value[key])) {
+            str += setForm(str, value[key], key + '[' + value[key] + ']')
+        } else {
+            str += k + '[' + key + ']' + '=' + value[key] + '&'
+        }
+    }
+    return str
+}
+
 xhr.toType = function (data, type = '') {
     if (!lang.isObject(data)) return data
     if (!type) return data
@@ -111,9 +109,21 @@ xhr.toType = function (data, type = '') {
         } else if (type.toLocaleUpperCase() === 'FORM') {
             let str = ''
             for (let i in data) {
-                str += i + '=' + data[i] + '&'
+                if (lang.isObject(data[i])) {
+                    for (let e in data[i]) {
+                        str += i + '[' + e + ']' + '=' + data[i][e] + '&'
+                    }
+                } else {
+                    str += i + '=' + data[i] + '&'
+                }
             }
             return str.substring(0, str.length - 1)
+        } else if (type.toLocaleUpperCase() === 'FORMDATA') {
+            let formData = new FormData()
+            for (let i in data) {
+                formData.append(i, data[i])
+            }
+            return formData
         }
     } catch (e) {
         return data

@@ -5,6 +5,7 @@ import domStyle from './lib/domStyle'
 import drag from './lib/drag'
 import lang from './lib/lang'
 import mScroll from './lib/scroll'
+import verify from './lib/verify'
 
 export {
     xhr,
@@ -13,5 +14,6 @@ export {
     domAttr,
     domStyle,
     lang,
-    mScroll
+    mScroll,
+    verify
 }
