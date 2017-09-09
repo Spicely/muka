@@ -1,6 +1,22 @@
 import config from '../config'
 import lang from '../base/lang'
 const date = {
+    getDate: function () {
+        let date = new Date()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
+        let hours = date.getHours()
+        let minutes = date.getMinutes()
+        let seconds = date.getSeconds()
+        return {
+            year: date.getFullYear(),
+            month: month >= 1 && month <= 9 ? '0' + month : month,
+            day: day >= 1 && day <= 9 ? '0' + day : day,
+            hours: hours >= 1 && hours <= 9 ? '0' + hours : hours,
+            minutes: minutes >= 1 && minutes <= 9 ? '0' + minutes : minutes,
+            seconds: seconds >= 1 && seconds <= 9 ? '0' + seconds : seconds
+        }
+    },
     getNowFormatDate: function (limiter = '-') {
         let date = new Date()
         let seperator1 = limiter
@@ -17,6 +33,10 @@ const date = {
             ' ' + date.getHours() + seperator2 + minutes +
             seperator2 + seconds
         return currentdate
+    },
+    getNowNumber: function () {
+        let date = this.getDate()
+        return Number(date.year + date.month + date.day + date.hours + date.minutes + date.seconds)
     }
 }
 lang.setObject(config.getObjectName('plugs.date'), 1, date)

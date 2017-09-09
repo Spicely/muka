@@ -11,9 +11,10 @@ import json from './json'
 
 
 /** globalInit
- *  @param baseUrl  前缀地址 用于和传递过的路径合并
- *  @param headers  fetch中的参数
- *  @param msg      用于显示操作类请求成功状态
+ *  @param baseUrl [String] 前缀地址 用于和传递过的路径合并
+ *  @param headers [Object] fetch中的参数
+ *  @param msg     [Boolean]   用于显示操作类请求成功状态
+ *  @param data    [Function] 用于在请求前重新获取参数并合并到请求参数中
  */
 
 let globalInit = {
@@ -26,6 +27,11 @@ let globalInit = {
     timeOut: 0,
     msg: false,
     loading: true,
+    data: () => {
+        return {}
+    },
+    body: {},
+    charset: 'charset=utf-8',
     dataType: '' // JSON FORM
     // mode : 'cors'
 }
@@ -38,13 +44,13 @@ let xhr = (...arg) => {
     } else if (arg.length === 2) {
         url = arg[0]
         if (lang.isObject(arg[1])) {
-            options = arg[1]
+            options = json.clone(arg[1])
         } else {
             mixin = arg[1]
         }
     } else if (arg.length === 3) {
         url = arg[0]
-        options = arg[1]
+        options = json.clone(arg[1])
         mixin = arg[2]
     }
     if (!url) throw new Error('No request path is set')
@@ -52,12 +58,22 @@ let xhr = (...arg) => {
 
     let reqAddress = mixin ? globalInit.baseUrl + url : url
     let init = mixin ? json.assign(json.clone(globalInit), options) : options
+    // 获得data中的数据并合并
+    if (lang.isObject(init.body)) {
+        json.assign(init.body, lang.isFunction(init.data) ? init.data() : {})
+    }
+
     if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
     lang.isFunction(init.before) && init.before(init.loading)
-    init.body = xhr.toType(init.body, init.dataType)
+    init.body = init.dataType ? xhr.toType(init.body, init.dataType) : init.body
     // 增加发送头
-    if (init.dataType.toLocaleUpperCase() === 'FORM') {
-        init.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+    if (init.dataType && (init.dataType.toLocaleUpperCase() === 'FORMDATA' || init.dataType.toLocaleUpperCase() === 'FORM')) {
+        init.headers ?
+            !init.headers['Content-Type'] ? init.headers['Content-Type'] = 'application/x-www-form-urlencoded;' + init.charset || '' :
+            init.headers['Content-Type'] :
+            init.headers = {
+                'Content-Type': 'application/x-www-form-urlencoded;' + init.charset || ''
+            }
     }
     let fetchPromise = new Promise((resolve, reject) => {
         let _fetch = fetch(reqAddress, init)
@@ -75,13 +91,15 @@ let xhr = (...arg) => {
             .catch(error => {
                 lang.isFunction(init.error) && init.error(error)
             })
+    }).catch((error) => {
+        lang.isFunction(init.error) && init.error(error)
     })
 
     return fetchPromise
 }
 xhr.config = function (options) {
     if (options) {
-        Object.assign(globalInit, options)
+        json.assign(globalInit, options)
         return globalInit
     } else {
         return globalInit
@@ -92,15 +110,15 @@ xhr.config = function (options) {
 const setForm = function (str = '', value, k) {
     for (let key in value) {
         if (lang.isObject(value[key]) || lang.isArray(value[key])) {
-            str += setForm(str, value[key], key + '[' + value[key] + ']')
+            str += setForm(str, value[key], key + '[' + encodeURIComponent(value[key]) + ']')
         } else {
-            str += k + '[' + key + ']' + '=' + value[key] + '&'
+            str += k + '[' + key + ']' + '=' + encodeURIComponent(value[key]) + '&'
         }
     }
     return str
 }
 
-xhr.toType = function (data, type = '') {
+xhr.toType = function (data, type = '', encode = true) {
     if (!lang.isObject(data)) return data
     if (!type) return data
     try {
@@ -111,10 +129,10 @@ xhr.toType = function (data, type = '') {
             for (let i in data) {
                 if (lang.isObject(data[i])) {
                     for (let e in data[i]) {
-                        str += i + '[' + e + ']' + '=' + data[i][e] + '&'
+                        str += i + '[' + e + ']' + '=' + (encode ? encodeURIComponent(data[i][e]) : data[i][e]) + '&'
                     }
                 } else {
-                    str += i + '=' + data[i] + '&'
+                    str += i + '=' + (encode ? encodeURIComponent(data[i]) : data[i]) + '&'
                 }
             }
             return str.substring(0, str.length - 1)

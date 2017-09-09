@@ -84,14 +84,21 @@ let browser = Object.create(null, {
                         localStorage.setItem(i, arg[0][i])
                     }
                 } else {
-                    return localStorage.getItem(arg[0]) || ''
+                    return decodeURIComponent(localStorage.getItem(arg[0]) || '')
                 }
             } else if (arg.length === 2) {
-                localStorage.setItem(arg[0], arg[1])
+                if (lang.isArray(arg[0]) && arg[1] === true) {
+                    arg[0].map((item) => {
+                        localStorage.removeItem(item)
+                    })
+                } else {
+                    localStorage.setItem(arg[0], arg[1])
+                }
             } else {
                 throw new Error('no arguments')
             }
         }
     }
 })
+lang.setObject(config.getObjectName('browser'), 1, browser)
 export default browser
