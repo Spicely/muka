@@ -1,8 +1,8 @@
 import config from '../config'
 import lang from '../base/lang'
 const date = {
-    getDate: function () {
-        let date = new Date()
+    getDate: function (time) {
+        let date = time ? new Date(time) : new Date()
         let month = date.getMonth() + 1
         let day = date.getDate()
         let hours = date.getHours()
@@ -17,21 +17,13 @@ const date = {
             seconds: seconds >= 1 && seconds <= 9 ? '0' + seconds : seconds
         }
     },
-    getNowFormatDate: function (limiter = '-') {
-        let date = new Date()
-        let seperator1 = limiter
-        let seperator2 = ':'
-        let month = date.getMonth() + 1
-        let strDate = date.getDate()
-        let minutes = date.getMinutes()
-        let seconds = date.getSeconds()
-        if (month >= 1 && month <= 9) month = '0' + month
-        if (strDate >= 0 && strDate <= 9) strDate = '0' + strDate
-        if (minutes >= 0 && minutes <= 9) minutes = '0' + minutes
-        if (seconds >= 0 && seconds <= 9) seconds = '0' + seconds
-        let currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
-            ' ' + date.getHours() + seperator2 + minutes +
-            seperator2 + seconds
+    getNowFormatDate: function (limiter = '-,:', time) {
+        let limit = limiter.split(',')
+        const date = this.getDate(time)
+        const _h = limit[0]
+        const _m = limit[1] ? limit[1] : limit[0]
+        let currentdate = date.year + _h + date.month + _h + date.day +
+            ' ' + date.hours + _m + date.minutes + _m + date.seconds
         return currentdate
     },
     getNowNumber: function () {
