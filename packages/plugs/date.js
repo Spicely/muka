@@ -18,7 +18,7 @@ const date = {
         }
     },
     Date: function (time) {
-        return time ? new Date(time.replace(/-/g, "/")) : new Date()
+        return time ? isNaN(new Date(time)) ? new Date(time.replace(/-/g, "/")) : new Date(time) : new Date()
     },
     getNowFormatDate: function (limiter = '-,:', time) {
         let limit = limiter.split(',')

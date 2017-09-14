@@ -66,15 +66,26 @@ let xhr = (...arg) => {
     if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
     lang.isFunction(init.before) && init.before(init.loading)
     init.body = init.dataType ? xhr.toType(init.body, init.dataType) : init.body
+
+
     // 增加发送头
-    if (init.dataType && (init.dataType.toLocaleUpperCase() === 'FORMDATA' || init.dataType.toLocaleUpperCase() === 'FORM')) {
+    let setHeader = function (header) {
         init.headers ?
-            !init.headers['Content-Type'] ? init.headers['Content-Type'] = 'application/x-www-form-urlencoded;' + init.charset || '' :
+            !init.headers['Content-Type'] ? init.headers['Content-Type'] = header + init.charset || '' :
             init.headers['Content-Type'] :
             init.headers = {
-                'Content-Type': 'application/x-www-form-urlencoded;' + init.charset || ''
+                'Content-Type': header + init.charset || ''
             }
     }
+    if (init.dataType) {
+        if (init.dataType.toLocaleUpperCase() === 'FORM') {
+            setHeader('application/x-www-form-urlencoded;')
+        } else if (init.dataType.toLocaleUpperCase() === 'FORMDATA') {
+            setHeader('multipart/form-data; boundary=----WebKitFormBoundaryRzCiAFP4fr9Y07uX;')
+        }
+    }
+
+
     let fetchPromise = new Promise((resolve, reject) => {
         let _fetch = fetch(reqAddress, init)
         let promises = [_fetch]
