@@ -33,7 +33,9 @@ let domAttr = lang.create({
         });
     },
     get(node, name) {
-        return query(node).getAttribute(alias[name.toLowerCase()] || name) || '';
+        return query(node).map((item) => {
+            return item.getAttribute(alias[name.toLowerCase()] || name) || '';
+        })
     },
     remove(node, name) {
         query(node).removeAttribute(alias[name.toLowerCase()] || name);
