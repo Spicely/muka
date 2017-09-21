@@ -145,6 +145,13 @@ let lang = Object.create(null, {
         },
         enumerable: true
     },
+    // 判断是否为空
+    isNull:  {
+        value: function (it) {
+            return it === "" || it === undefined || it === null || isNaN(it)
+        },
+        enumerable: true
+    },
     // 判断是否为布尔
     isBoolean: {
         value: function (it) {

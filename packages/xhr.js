@@ -55,18 +55,17 @@ let xhr = (...arg) => {
     }
     if (!url) throw new Error('No request path is set')
     if (!lang.isObject(options)) throw new Error('Arguments can only be Object')
-
     let reqAddress = mixin ? globalInit.baseUrl + url : url
     let init = mixin ? json.assign(json.clone(globalInit), options) : options
     // 获得data中的数据并合并
     if (lang.isObject(init.body)) {
         json.assign(init.body, lang.isFunction(init.data) ? init.data() : {})
+
     }
 
     if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
     lang.isFunction(init.before) && init.before(init.loading)
     init.body = init.dataType ? xhr.toType(init.body, init.dataType) : init.body
-
 
     // 增加发送头
     let setHeader = function (header) {
@@ -82,6 +81,8 @@ let xhr = (...arg) => {
             setHeader('application/x-www-form-urlencoded;')
         } else if (init.dataType.toLocaleUpperCase() === 'FORMDATA') {
             setHeader('multipart/form-data; boundary=----WebKitFormBoundaryRzCiAFP4fr9Y07uX;')
+        } else if (init.dataType.toLocaleUpperCase() === 'JSON') {
+            setHeader('application/json;charset=utf-8;')
         }
     }
 
