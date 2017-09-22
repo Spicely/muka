@@ -13,6 +13,7 @@ export {
     date,
     drag,
     domAttr,
+    domClass,
     domStyle,
     lang,
     mScroll,
