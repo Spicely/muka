@@ -1,5 +1,6 @@
 import xhr from './lib/xhr'
 import date from './lib/date'
+import json from './lib/json'
 import domAttr from './lib/dom-attr'
 import domClass from './lib/dom-class'
 import domStyle from './lib/dom-style'
@@ -12,6 +13,7 @@ export {
     xhr,
     date,
     drag,
+    json,
     domAttr,
     domClass,
     domStyle,

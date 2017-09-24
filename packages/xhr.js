@@ -80,7 +80,8 @@ let xhr = (...arg) => {
         if (init.dataType.toLocaleUpperCase() === 'FORM') {
             setHeader('application/x-www-form-urlencoded;')
         } else if (init.dataType.toLocaleUpperCase() === 'FORMDATA') {
-            setHeader('multipart/form-data; boundary=----WebKitFormBoundaryRzCiAFP4fr9Y07uX;')
+            // 使用FORMDATA 将头清空
+            init.headers = {}
         } else if (init.dataType.toLocaleUpperCase() === 'JSON') {
             setHeader('application/json;charset=utf-8;')
         }
