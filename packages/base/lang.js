@@ -146,9 +146,9 @@ let lang = Object.create(null, {
         enumerable: true
     },
     // 判断是否为空
-    isNull:  {
+    isNotNull:  {
         value: function (it) {
-            return it === "" || it === undefined || it === null || isNaN(it)
+            return !(it === '' || it === undefined || it === null)
         },
         enumerable: true
     },
