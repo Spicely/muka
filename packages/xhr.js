@@ -83,7 +83,7 @@ let xhr = (...arg) => {
             // 使用FORMDATA 将头清空
             init.headers = {}
         } else if (init.dataType.toLocaleUpperCase() === 'JSON') {
-            setHeader('application/json;charset=utf-8;')
+            setHeader('application/json;')
         }
     }
 
