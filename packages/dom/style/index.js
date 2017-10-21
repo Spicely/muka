@@ -26,7 +26,7 @@ let domStyle = lang.create({
         let values = query(node).map((item) => {
             let value = config.global.getComputedStyle(item)[name] || node[name]
             if (value) {
-                return lang.isNumber(value) ? value : value.indexOf('px') === -1 ? value : parseInt(value)
+                return lang.isNumber(value) ? value : value.indexOf('px') === -1 ? value : Math.ceil(parseFloat(value))
             } else {
                 return ''
             }
