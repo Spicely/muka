@@ -1,3 +1,4 @@
+import browser from './lib/browser'
 import xhr from './lib/xhr'
 import date from './lib/date'
 import json from './lib/json'
@@ -10,6 +11,7 @@ import mScroll from './lib/scroll'
 import verify from './lib/verify'
 
 export {
+    browser,
     xhr,
     date,
     drag,
