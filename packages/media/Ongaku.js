@@ -5,18 +5,17 @@
  */
 import config from '../config'
 import lang from '../base/lang'
-import xhr from '../xhr'
 
 export default (function () {
     // let type = ['sine', 'square', 'sawtooth', 'triangle', 'custom']
     let playMode = ['list', 'single', 'random']
     class Ongaku {
-        constructor(params = {}) {
+        constructor (params = {}) {
             if (!lang.isObject(params)) throw new Error('params type not Object')
 
             // 初始化对象
             try {
-                this.ongaku = new(window.AudioContext || window.webkitAudioContext)()
+                this.ongaku = new (window.AudioContext || window.webkitAudioContext)()
 
                 // 控制音调
                 this.oscillatorNode = this.ongaku.createOscillator()
@@ -76,7 +75,7 @@ export default (function () {
         }
 
         // 设置资源路径 Array || String
-        setSources(arr, key) {
+        setSources (arr, key) {
             if (!lang.isArray(arr)) return
             this.sources = arr
             this.playKey = key
@@ -85,7 +84,7 @@ export default (function () {
         }
 
         // 获得来自audio节点的文件
-        getElementSources(element) {
+        getElementSources (element) {
             if (!lang.isElement(element)) {
                 throw new Error('type not is Elememt')
             }
@@ -204,7 +203,7 @@ export default (function () {
         //   }
         // }
         // 播放
-        play() {
+        play () {
             this.sourceNode.then(() => {
                 this.audio.play()
                 lang.isFunction(this.playCallBack) && this.playCallBack()
@@ -212,7 +211,7 @@ export default (function () {
         }
 
         // 暂停
-        pause() {
+        pause () {
             this.sourceNode.then(() => {
                 this.audio.pause()
                 lang.isFunction(this.pauseCallBack) && this.pauseCallBack()
@@ -220,7 +219,7 @@ export default (function () {
         }
 
         // 下一曲
-        next() {
+        next () {
             if (this.playMode === 'random') {
                 this.playConf.playNumer = Math.round(Math.random() * this.sources.length)
                 return
@@ -229,7 +228,7 @@ export default (function () {
         }
 
         // 上一曲
-        prev() {
+        prev () {
             if (this.playMode === 'random') {
                 this.playConf.playNumer = Math.round(Math.random() * this.sources.length)
                 return
@@ -238,30 +237,30 @@ export default (function () {
         }
 
         // 设置音调
-        setOscillator(params) {}
+        setOscillator (params) {}
 
         // 获得播放时间
-        getPlayTime() {
+        getPlayTime () {
             return this.audio.currentTime
         }
 
         // 获得当前音乐总时长
-        getOngakuTime() {
+        getOngakuTime () {
             return this.audio.duration
         }
 
         // 设置播放事件
-        setPlayTime(value) {
+        setPlayTime (value) {
             this.audio.currentTime = value
         }
 
         // 设置播放器音量
-        setVolume(value) {
+        setVolume (value) {
             this.gainNode.gain.value = value
         }
 
         // 设置播放模式
-        setPlayMode(mode) {
+        setPlayMode (mode) {
             if (playMode.indexOf(mode) === -1) {
                 throw new Error('mode not is default')
             }
@@ -269,7 +268,7 @@ export default (function () {
         }
 
         // 播放完成后的事件
-        ended() {
+        ended () {
             if (this.autoNext) {
                 if (this.playNumer < this.sources.length - 1) {
                     if (this.mode === 'single') {

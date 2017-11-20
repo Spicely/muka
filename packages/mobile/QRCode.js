@@ -10,21 +10,21 @@ let QRCode = function () {
         return navigator.mediaDevices.getUserMedia({
             video: {
                 facingMode: {
-                    exact: "environment"
+                    exact: 'environment'
                 }
             }
-        });
+        })
     } else if (navigator.getUserMedia) {
         return navigator.getUserMedia({
             video: {
                 facingMode: {
-                    exact: "environment"
+                    exact: 'environment'
                 }
             }
-        });
+        })
     } else {
-        throw new Error("Browser does not support");
+        throw new Error('Browser does not support')
     }
-};
+}
 
-export default QRCode;
+export default QRCode

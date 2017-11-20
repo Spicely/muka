@@ -4,32 +4,32 @@ let init = {
     nodeType: 'video'
 }
 export default class MediaBasic {
-    constructor(params = {}) {
+    constructor (params = {}) {
         Object.assign(init, params)
         this.media = document.createElement(init.nodeType)
     }
-    setUrl(url) {
+    setUrl (url) {
         this.media.src = url
     }
 
     // 播放
-    play() {
+    play () {
         this.media.play()
     }
 
     // 暂停
-    pause() {
+    pause () {
         this.media.pause()
     }
 
     // 追加到指定位置
-    place(element, pos) {
+    place (element, pos) {
         if (!lang.isElement(element)) throw new Error('element not is Element')
         element.appendChild(this.media)
     }
 
     // 设置音量
-    setValue(value) {
+    setValue (value) {
         this.media.value = value
     }
 }

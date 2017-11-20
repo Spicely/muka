@@ -3,9 +3,9 @@ import query from '../../dom/query'
 import config from '../../config'
 
 const _eventCompat = function (event) {
-    let type = event.type;
-    if (type == 'DOMMouseScroll' || type == 'mousewheel') {
-        event.delta = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+    let type = event.type
+    if (type === 'DOMMouseScroll' || type === 'mousewheel') {
+        event.delta = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3
     }
     if (event.srcElement && !event.target) {
         event.target = event.srcElement
@@ -16,8 +16,8 @@ const _eventCompat = function (event) {
         }
     }
     return event
-};
-const addEvent = (function (window, undefined) {
+}
+const addEvent = (function (window) {
     if (window.addEventListener) {
         return function (el, type, fn, capture) {
             if (type === 'mousewheel' && document.mozFullScreen !== undefined) {

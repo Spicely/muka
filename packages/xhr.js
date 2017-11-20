@@ -60,7 +60,6 @@ let xhr = (...arg) => {
     // 获得data中的数据并合并
     if (lang.isObject(init.body)) {
         json.assign(init.body, lang.isFunction(init.data) ? init.data() : {})
-
     }
 
     if (init.timeOut && !lang.isNumber(init.timeOut)) throw new Error('timeOut type Error is Number')
@@ -69,12 +68,13 @@ let xhr = (...arg) => {
 
     // 增加发送头
     let setHeader = function (header) {
-        init.headers ?
-            !init.headers['Content-Type'] ? init.headers['Content-Type'] = header + init.charset || '' :
-            init.headers['Content-Type'] :
+        if (init.headers) {
+            if (!init.headers['Content-Type']) init.headers['Content-Type'] = header + init.charset || ''
+        } else {
             init.headers = {
                 'Content-Type': header + init.charset || ''
             }
+        }
     }
     if (init.dataType) {
         if (init.dataType.toLocaleUpperCase() === 'FORM') {

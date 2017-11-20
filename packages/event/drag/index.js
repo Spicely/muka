@@ -31,7 +31,7 @@ if (browser.isMobile) {
 }
 
 
-function drag(e, optins = {}) {
+function drag (e, optins = {}) {
     e = e.originalEvent || e
     if (!lang.isElement(e.target)) {
         throw new Error('type not is Element')
@@ -52,7 +52,7 @@ function drag(e, optins = {}) {
     })
 }
 
-function move(e) {
+function move (e) {
     init.moveStatus = true
     e = e.originalEvent || e
     let x = e.screenX || (e.targetTouches ? e.targetTouches[0].screenX : 0)
@@ -85,7 +85,7 @@ function move(e) {
     e.preventDefault()
 }
 
-function end(e) {
+function end (e) {
     init.status = false
     lang.isFunction(init.handleMove) && init.handleEnd(init.moveStatus ? init.toX : init.X, init.moveStatus ? init.toY : init.Y, {
         x: init.dir_x,

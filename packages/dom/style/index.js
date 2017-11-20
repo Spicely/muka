@@ -3,14 +3,14 @@
  * Write Name Spicely
  * Email Spicely@outlook.com
  */
-import config from '../../config';
-import lang from '../../base/lang';
-import query from '../query';
-import domAttr from '../attr';
+import config from '../../config'
+import lang from '../../base/lang'
+import query from '../query'
+import domAttr from '../attr'
 
-let exception = ['width', 'height', 'max-width', 'min-width', 'max-height', 'min-height', 'line-height', 'top', 'left', 'right', 'bottom'];
+let exception = ['width', 'height', 'max-width', 'min-width', 'max-height', 'min-height', 'line-height', 'top', 'left', 'right', 'bottom']
 let domStyle = lang.create({
-    set(node, name, value) {
+    set (node, name, value) {
         query(node).map((item) => {
             if (lang.isObject(name)) {
                 domAttr.set(item, {
@@ -20,9 +20,9 @@ let domStyle = lang.create({
                 item.style[name] = lang.isNumber(value) && exception.indexOf(name) !== -1 ? value + 'px' : value
             }
             return item
-        });
+        })
     },
-    get(node, name) {
+    get (node, name) {
         let values = query(node).map((item) => {
             let value = config.global.getComputedStyle(item)[name] || node[name]
             if (value) {
@@ -30,9 +30,9 @@ let domStyle = lang.create({
             } else {
                 return ''
             }
-        });
+        })
         return values
-    },
-});
+    }
+})
 lang.setObject(config.getObjectName('dom.style'), 1, domStyle)
 export default domStyle

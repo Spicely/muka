@@ -12,7 +12,7 @@ import config from '../config'
  * @param  {[type]} object  [description]
  * @return {[type]}         [description]
  */
-function getProp(parts, create, content) {
+function getProp (parts, create, content) {
     let part = create ? content || config.global : content || {}
     try {
         for (let i = 0; i < parts.length; i++) {
@@ -30,7 +30,7 @@ function getProp(parts, create, content) {
         throw new Error(e)
     }
     return part
-};
+}
 
 let lang = Object.create(null, {
     // 检查对象类型
@@ -39,38 +39,38 @@ let lang = Object.create(null, {
             let o = {}.toString.call(it)
             let ele = o.split(' ')[1].substr(0, 4)
             switch (o) {
-                case '[object Object]':
-                    return 'object'
-                case '[object Array]':
-                    return 'array'
-                case '[object RegExt]':
-                    return 'regext'
-                case '[object Number]':
-                    return 'number'
-                case '[object String]':
-                    return 'string'
-                case '[object Null]':
-                    return 'null'
-                case '[object Function]':
-                    return 'function'
-                case '[object Boolean]':
-                    return 'boolean'
-                case '[object Blob]':
-                    return 'blob'
-                case '[object File]':
-                    return 'file'
-                case '[object FormData]':
-                    return 'formData'
-                default:
-                    if (!it) {
-                        return '' + it + ''
+            case '[object Object]':
+                return 'object'
+            case '[object Array]':
+                return 'array'
+            case '[object RegExt]':
+                return 'regext'
+            case '[object Number]':
+                return 'number'
+            case '[object String]':
+                return 'string'
+            case '[object Null]':
+                return 'null'
+            case '[object Function]':
+                return 'function'
+            case '[object Boolean]':
+                return 'boolean'
+            case '[object Blob]':
+                return 'blob'
+            case '[object File]':
+                return 'file'
+            case '[object FormData]':
+                return 'formData'
+            default:
+                if (!it) {
+                    return '' + it + ''
+                } else {
+                    if (ele === 'HTML' || ele === 'Node') {
+                        return 'element'
                     } else {
-                        if (ele === 'HTML' || ele === 'Node') {
-                            return 'element'
-                        } else {
-                            return 'unkonw'
-                        }
+                        return 'unkonw'
                     }
+                }
             }
         },
         enumerable: true
@@ -146,7 +146,7 @@ let lang = Object.create(null, {
         enumerable: true
     },
     // 判断是否为空
-    isNotNull:  {
+    isNotNull: {
         value: function (it) {
             return !(it === '' || it === undefined || it === null)
         },
