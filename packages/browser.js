@@ -20,17 +20,33 @@ let browser = Object.create(null, {
     },
     // 显示器宽度
     GL_SC_HEIGHT: {
-        value: config.global.screen.height
+        value: (function () {
+            try {
+                return config.global.screen.height
+            } catch (e) {
+                return 0
+            }
+        })()
     },
     // 显示器高度
     GL_SC_WIDTH: {
-        value: config.global.screen.width
+        value: (function () {
+            try {
+                return config.global.screen.width
+            } catch (e) {
+                return 0
+            }
+        })()
     },
     // 用于获得浏览器平台
     redirect: {
         get: () => {
-            let sUserAgent = navigator.userAgent.toLowerCase()
-            return /\(([^()]*)\)/.test(sUserAgent) && RegExp.$1
+            try {
+                let sUserAgent = navigator.userAgent.toLowerCase()
+                return /\(([^()]*)\)/.test(sUserAgent) && RegExp.$1
+            } catch (e) {
+                return 'error'
+            }
         }
     },
     // 判断PC平台

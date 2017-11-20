@@ -19,10 +19,22 @@ export default Object.create(null, {
     },
     // 全局对象
     global: {
-        value: window
+        value: (function () {
+            try {
+                return window
+            } catch (e) {
+                return {}
+            }
+        })()
     },
     // 文本对象
     basic: {
-        value: document
+        value: (function () {
+            try {
+                return document
+            } catch (e) {
+                return {}
+            }
+        })()
     }
 })
