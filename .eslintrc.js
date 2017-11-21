@@ -5,6 +5,10 @@ module.exports = {
         browser: true,
         node: true
     },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
     extends: 'standard',
     // required to lint *.vue files
     plugins: [
@@ -23,7 +27,9 @@ module.exports = {
             "beforeColon": false,
             "afterColon": true
         }],
-        "no-multiple-empty-lines": [1, {"max": 3}]
+        "no-multiple-empty-lines": [1, {
+            "max": 3
+        }]
     },
     globals: {}
 }

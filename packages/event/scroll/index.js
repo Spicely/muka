@@ -36,7 +36,7 @@ const addEvent = (function (window) {
         }
     }
     return function () {}
-})(window)
+})(config.global)
 let mScroll = function (el, callback, capture) {
     el = query(el)[0]
     addEvent(el, 'mousewheel', callback, capture)
