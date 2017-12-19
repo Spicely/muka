@@ -17,8 +17,8 @@ const date = {
             seconds: seconds >= 1 && seconds <= 9 ? '0' + seconds : seconds
         }
     },
-    getNowFormatDate: function (limiter = '-') {
-        let date = new Date()
+    getNowFormatDate: function (dateVal, limiter = '-') {
+        let date = dateVal ? new Date(dateVal) : new Date()
         let seperator1 = limiter
         let seperator2 = ':'
         let month = date.getMonth() + 1
