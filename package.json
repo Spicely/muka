@@ -1,56 +1,5 @@
 {
-  "_args": [
-    [
-      "muka@0.0.6",
-      "D:\\www\\youba-vue-mobile"
-    ]
-  ],
-  "_from": "muka@0.1.7",
-  "_id": "muka@0.1.7",
-  "_inBundle": false,
-  "_integrity": "sha512-cmdDqQ68mpzV6VlzLZUuNadVyNYCn2aDR21egTQDKV0KQgSOKPtG5seij64l6R27Fs1tjb0cdxdJRsSjyEkwhw==",
-  "_location": "/muka",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "muka@0.1.7",
-    "name": "muka",
-    "escapedName": "muka",
-    "rawSpec": "0.1.7",
-    "saveSpec": null,
-    "fetchSpec": "0.1.7"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/muka/-/muka-0.1.7.tgz",
-  "_shasum": "40db0cf99297e2c819d4a78bd0733d0ad3b84681",
-  "_spec": "muka@0.1.7",
-  "_where": "C:\\web\\nuxt-demo",
-  "author": {
-    "name": "Spicely"
-  },
-  "bugs": {
-    "url": "https://github.com/Spicely/muka/issues"
-  },
-  "bundleDependencies": false,
-  "deprecated": false,
-  "description": "一个用于原生js 基于es6编写的常用方法处理",
-  "homepage": "https://github.com/Spicely/muka#readme",
-  "keywords": [
-    "es6"
-  ],
-  "license": "ISC",
-  "main": "index.js",
-  "name": "muka",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Spicely/muka.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "version": "0.1.7"
+  "dependencies": {
+    "tslint-react": "^3.5.1"
+  }
 }
