@@ -1,4 +1,5 @@
 import type from './type'
+
 const lang = {
     // 判断数据类型
     type: function (it: any): string {
@@ -64,4 +65,5 @@ const lang = {
         throw new Error('source type not supported')
     }
 }
+
 export default lang

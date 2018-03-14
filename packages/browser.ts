@@ -5,6 +5,7 @@
  */
 import lang from './lang'
 import type from './type'
+
 const browser = Object.create(null, {
     // 浏览器可见高度
     height: {
@@ -101,4 +102,5 @@ const browser = Object.create(null, {
         }
     }
 })
+
 export default browser

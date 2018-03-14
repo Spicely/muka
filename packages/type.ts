@@ -53,4 +53,5 @@ const type = {
         return false
     }
 }
+
 export default type
