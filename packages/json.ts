@@ -11,6 +11,8 @@ const json = {
         for (let key in main) {
             if (type.object(main[key])) {
                 minor[key] = this.assign({}, main[key])
+            } else if (type.array(main[key])) {
+                minor[key] = main[key].concat()
             } else {
                 minor[key] = main[key]
             }
