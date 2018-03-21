@@ -9,9 +9,11 @@ const json = {
     // 深度合并
     assign: function (minor : object = {}, main : object = {}): object {
         for (let key in main) {
-            minor[key] = minor[key] && type.object(minor[key])
-                ? this.assign(minor[key], main[key])
-                : minor[key] = main[key]
+            if (type.object(main[key])) {
+                minor[key] = this.assign({}, main[key])
+            } else {
+                minor[key] = main[key]
+            }
         }
         return minor
     },

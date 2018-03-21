@@ -39,7 +39,7 @@ const type = {
     },
     // 判断是否没有被赋值
     notVol: function (it: any): boolean {
-        return lang.type(it) === 'undefined' || it === '' || lang.type(it) === 'null' || isNaN(it)
+        return lang.type(it) === 'undefined' || it === '' || lang.type(it) === 'null'
     },
     // 判断是否为布尔
     bool: function (it: any): boolean  {
