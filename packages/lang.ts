@@ -56,7 +56,7 @@ const lang = {
     // 判断值中是否存在
     hash: function (source: string | [any] | object, value: string) {
         if (Array.isArray(source)) {
-            return source.includes(value)
+            return source.indexOf(value) !== -1
         } else if (type.object(source)) {
             return source.hasOwnProperty(value)
         } else if (typeof source === 'string') {

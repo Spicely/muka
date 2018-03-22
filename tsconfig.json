@@ -2,9 +2,10 @@
     "compilerOptions": {
         "outDir": "build/dist",
         "module": "esnext",
-        "target": "es5",
+        "target": "es6",
         "lib": ["es6", "dom"],
-        "sourceMap": true,
+        "sourceMap": false,
+        "declaration": true,
         "allowJs": true,
         "jsx": "react",
         "moduleResolution": "node",
