@@ -20,7 +20,7 @@ const date = {
             date: time
         }
     },
-    getFormatDate: function (limiter: string = 'YYYY-MM-DD', dateVal?: string) {
+    getFormatDate: function (dateVal?: string, limiter: string = 'YYYY-MM-DD') {
         const time = this.getDate(dateVal)
         const o = {     
             'MM' : time.month, // 月份 
