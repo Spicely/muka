@@ -1,49 +1,45 @@
-import lang from './lang'
+import getType from '../lang/getType'
 
 const type = {
     // 判断是否为表单数据
     form: function(it: any): boolean {
-        return lang.type(it) === 'formData'
+        return getType(it) === 'formData'
     },
     // 是否为文件类型
     file: function(it: any): boolean {
-        return lang.type(it) === 'file'
+        return getType(it) === 'file'
     },
     // 判断是否为数组
     array: function(it: any): boolean {
-        return lang.type(it) === 'array'
+        return getType(it) === 'array'
     },
     // 判断是否为JSON
     object: function (it: any): boolean {
-        return lang.type(it) === 'object'
+        return getType(it) === 'object'
     },
     // 判断是否为函数
     func: function (it: any): boolean {
-        return lang.type(it) === 'function'
+        return getType(it) === 'function'
     },
     // 判断是否为字符串
     string: function (it: any): boolean {
-        return lang.type(it) === 'string'
+        return getType(it) === 'string'
     },
     // 判断是否为Blob
     blob: function (it: any): boolean {
-        return lang.type(it) === 'blob'
+        return getType(it) === 'blob'
     },
     // 判断是否为数字
     number: function (it: any): boolean {
-        return lang.type(it) === 'number'
+        return getType(it) === 'number'
     },
     // 判断是否为节点
     element: function (it: any): boolean {
-        return lang.type(it) === 'element'
-    },
-    // 判断是否没有被赋值
-    notVol: function (it: any): boolean {
-        return lang.type(it) === 'undefined' || it === '' || lang.type(it) === 'null'
+        return getType(it) === 'element'
     },
     // 判断是否为布尔
     bool: function (it: any): boolean  {
-        return lang.type(it) === 'boolean'
+        return getType(it) === 'boolean'
     },
     // 判断是否为空对象
     emptyObject: function (it: object): boolean  {

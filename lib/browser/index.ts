@@ -3,20 +3,28 @@
  * Write Name Shackles Butterfly
  * Email ShackButter@outlook.com
  */
-import lang from './lang'
-import type from './type'
+interface Browser {
+    height: number
+    width: number
+    GL_SC_HEIGHT: number
+    GL_SC_WIDTH: number
+    redirect: string
+    isPC: boolean
+    isMobile: boolean
+    search: object
+}
 
-const browser = Object.create(null, {
+const browser: Browser = Object.create(null, {
     // 浏览器可见高度
     height: {
         get: () => {
-            return document.documentElement.clientHeight
+            return document.body.clientHeight
         }
     },
     // 浏览器可见宽度
     width: {
         get: () => {
-            return document.documentElement.clientWidth
+            return document.body.clientWidth
         }
     },
     // 显示器宽度
@@ -52,29 +60,29 @@ const browser = Object.create(null, {
     },
     // 判断PC平台
     isPC: {
-        get () {
-            let mobile = this.redirect.match(/ipad/i) || 
-                this.redirect.match(/iphone os/i) || 
-                this.redirect.match(/midp/i) || 
-                this.redirect.match(/rv:1.2.3.4/i) || 
-                this.redirect.match(/ucweb/i) || 
-                this.redirect.match(/android/i) || 
-                this.redirect.match(/windows ce/i) || 
-                this.redirect.match(/windows mobile/i) || 
+        get(): boolean {
+            let mobile = this.redirect.match(/ipad/i) ||
+                this.redirect.match(/iphone os/i) ||
+                this.redirect.match(/midp/i) ||
+                this.redirect.match(/rv:1.2.3.4/i) ||
+                this.redirect.match(/ucweb/i) ||
+                this.redirect.match(/android/i) ||
+                this.redirect.match(/windows ce/i) ||
+                this.redirect.match(/windows mobile/i) ||
                 this.redirect.match(/windows phone/i)
             return !mobile
         }
     },
     // 判断手机平台
     isMobile: {
-        get () {
+        get(): boolean {
             return !this.isPC
         }
     },
 
     // 获得浏览器发出请求的参数
     search: {
-        get () {
+        get(): object {
             let search = location.search
             if (search) {
                 search = location.search.substr(1)

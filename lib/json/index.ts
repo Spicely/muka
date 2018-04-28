@@ -3,11 +3,11 @@
  *  Name Spicely
  *  Email Spicely@outlook.com
  */
-import type from './type'
+import type from '../type'
 
 const json = {
     // 深度合并
-    assign: function (minor : object = {}, main : object = {}): object {
+    assign: function (minor: object = {}, main: object = {}): object {
         for (let key in main) {
             if (type.object(main[key])) {
                 minor[key] = this.assign({}, main[key])
@@ -20,11 +20,11 @@ const json = {
         return minor
     },
     // 深度复制
-    clone: function (obj : object): object {
+    clone: function (obj: object): object {
         return this.assign({}, obj)
     },
     // 移除指定数组对象 返回一个浅复制对象
-    omit(obj : object, fields : string[]): object {
+    omit(obj: object, fields: string[]): object {
         const shallowCopy = {
             ...obj
         }

@@ -1,8 +1,14 @@
-import lang from '../lang'
-
-const formatDate: string[] = ['YYYY-MM', 'YYYY-MM-DD', 'YYYY-MMM-DD']
 const date = {
-    getDate: function (dateVal?: string ): object {
+    getDate: function (dateVal?: string ): { 
+                                            year: string, 
+                                            month: string,
+                                            day: string,
+                                            hours: string,
+                                            minutes: string,
+                                            seconds: string,
+                                            milliSeconds: string,
+                                            date: Date
+                                        } {
         const time = dateVal ? new Date(dateVal) : new Date
         const month: number = time.getMonth() + 1
         const day: number = time.getDate()
