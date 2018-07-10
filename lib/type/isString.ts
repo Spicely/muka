@@ -1,5 +1,8 @@
 import getType from '../lang/getType'
-const isString = function(it: any): boolean {
+
+// 判断是否为字符串
+const isString = (it: any): boolean => {
     return getType(it) === 'string'
 }
+
 export default isString

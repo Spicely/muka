@@ -1,8 +1,8 @@
-const parseQueryJSON = function (query: string) {
-    let arr = query.split('&')
-    let obj: object = {}
-    arr.map(function (item: string) {
-        let tmpArr = item.split('=')
+const parseQueryJSON = (query: string) => {
+    const arr = query.split('&')
+    const obj: object = {}
+    arr.map((item: string) => {
+        const tmpArr = item.split('=')
         obj[decodeURIComponent(tmpArr[0])] = decodeURIComponent(tmpArr[1])
     })
     return obj

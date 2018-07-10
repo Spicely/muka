@@ -1,9 +1,9 @@
 /**
  * Create Time 2016-10-20
  * Write Name Shackles Butterfly
- * Email ShackButter@outlook.com
+ * Email Spicely@outlook.com
  */
-interface Browser {
+interface IBrowser {
     height: number
     width: number
     GL_SC_HEIGHT: number
@@ -14,22 +14,10 @@ interface Browser {
     search: object
 }
 
-const browser: Browser = Object.create(null, {
-    // 浏览器可见高度
-    height: {
-        get: () => {
-            return document.body.clientHeight
-        }
-    },
-    // 浏览器可见宽度
-    width: {
-        get: () => {
-            return document.body.clientWidth
-        }
-    },
+const browser: IBrowser = Object.create(null, {
     // 显示器宽度
     GL_SC_HEIGHT: {
-        value: (function () {
+        value: (_ => {
             try {
                 return window.screen.height
             } catch (e) {
@@ -37,9 +25,10 @@ const browser: Browser = Object.create(null, {
             }
         })()
     },
+
     // 显示器高度
     GL_SC_WIDTH: {
-        value: (function () {
+        value: (_ => {
             try {
                 return window.screen.width
             } catch (e) {
@@ -47,21 +36,25 @@ const browser: Browser = Object.create(null, {
             }
         })()
     },
-    // 用于获得浏览器平台
-    redirect: {
+
+    // 浏览器可见高度
+    height: {
         get: () => {
-            try {
-                let sUserAgent = navigator.userAgent.toLowerCase()
-                return /\(([^()]*)\)/.test(sUserAgent) && RegExp.$1
-            } catch (e) {
-                return 'error'
-            }
+            return document.body.clientHeight
         }
     },
+
+    // 判断手机平台
+    isMobile: {
+        get(): boolean {
+            return !this.isPC
+        }
+    },
+
     // 判断PC平台
     isPC: {
         get(): boolean {
-            let mobile = this.redirect.match(/ipad/i) ||
+            const mobile = this.redirect.match(/ipad/i) ||
                 this.redirect.match(/iphone os/i) ||
                 this.redirect.match(/midp/i) ||
                 this.redirect.match(/rv:1.2.3.4/i) ||
@@ -73,22 +66,28 @@ const browser: Browser = Object.create(null, {
             return !mobile
         }
     },
-    // 判断手机平台
-    isMobile: {
-        get(): boolean {
-            return !this.isPC
+
+    // 用于获得浏览器平台
+    redirect: {
+        get: () => {
+            try {
+                const sUserAgent = navigator.userAgent.toLowerCase()
+                return /\(([^()]*)\)/.test(sUserAgent) && RegExp.$1
+            } catch (e) {
+                return 'error'
+            }
         }
     },
 
-    // 获得浏览器发出请求的参数
+    // 获得浏览器传递的参数
     search: {
-        get(): object {
+        get() {
             let search = location.search
             if (search) {
                 search = location.search.substr(1)
             } else {
                 // 没有得到可能是单页面应用从#后截取
-                let query = location.hash.split('?')
+                const query = location.hash.split('?')
                 try {
                     if (query[1]) {
                         search = query[1]
@@ -100,13 +99,20 @@ const browser: Browser = Object.create(null, {
                     return {}
                 }
             }
-            let arr = search.split('&')
-            let obj: object = {}
-            arr.map(function (item: string) {
-                let tmpArr = item.split('=')
+            const arr = search.split('&')
+            const obj: object = {}
+            arr.map((item: string) => {
+                const tmpArr = item.split('=')
                 obj[decodeURIComponent(tmpArr[0])] = decodeURIComponent(tmpArr[1])
             })
             return obj
+        }
+    },
+
+    // 浏览器可见宽度
+    width: {
+        get: () => {
+            return document.body.clientWidth
         }
     }
 })

@@ -1,4 +1,4 @@
-const getType = function (it: any): string {
+const getType = (it: any): string => {
     const o: string = {}.toString.call(it)
     const ele: string = o.split(' ')[1].substr(0, 4)
     switch (o) {
