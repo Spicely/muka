@@ -56,14 +56,14 @@ export default class PreLoad {
         if (hash(this.imgTypes, ext)) {
             const img: HTMLImageElement = new Image()
             return new Promise((resolve, reject) => {
-                img.addEventListener('load', function () {
+                img.addEventListener('load', () => {
                     THIS.loadNum++
-                    THIS.loadFunc(this)
+                    THIS.loadFunc()
                     resolve(uri)
                 })
-                img.addEventListener('error', function () {
+                img.addEventListener('error',  () => {
                     THIS.loadNum++
-                    THIS.loadFunc(this)
+                    THIS.loadFunc()
                     reject('load img error ' + uri)
                 })
                 img.src = uri
@@ -71,18 +71,18 @@ export default class PreLoad {
         }
         return axios.get(uri).then((data: any) => {
             this.loadNum++
-            this.loadFunc(data)
+            this.loadFunc()
             return data
-        }).catch((data: string) => {
+        }).catch(() => {
             this.loadNum++
-            this.loadFunc(data)
+            this.loadFunc()
         })
     }
 
     /**
      * 加载完成的回调
      */
-    private loadFunc(data?: any) {
+    private loadFunc() {
         if (isFunc(this.loading)) {
             this.loading(this.loadNum, this.count, this.pomiseLoads[this.loadNum])
         }
