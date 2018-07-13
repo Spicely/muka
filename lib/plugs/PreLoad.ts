@@ -52,36 +52,37 @@ export default class PreLoad {
     private getExtLoad(uri: string): Promise<{} | void> {
         const index = uri.lastIndexOf('.')
         const ext = uri.substr(index + 1)
+        const THIS = this
         if (hash(this.imgTypes, ext)) {
             const img: HTMLImageElement = new Image()
             return new Promise((resolve, reject) => {
-                img.addEventListener('load', () => {
-                    this.loadNum++
-                    this.loadFunc()
+                img.addEventListener('load', function () {
+                    THIS.loadNum++
+                    THIS.loadFunc(this)
                     resolve(uri)
                 })
-                img.addEventListener('error', () => {
-                    this.loadNum++
-                    this.loadFunc()
+                img.addEventListener('error', function () {
+                    THIS.loadNum++
+                    THIS.loadFunc(this)
                     reject('load img error ' + uri)
                 })
                 img.src = uri
             })
         }
-        return axios.get(uri).then((data) => {
+        return axios.get(uri).then((data: any) => {
             this.loadNum++
-            this.loadFunc()
+            this.loadFunc(data)
             return data
-        }).catch(() => {
+        }).catch((data: string) => {
             this.loadNum++
-            this.loadFunc()
+            this.loadFunc(data)
         })
     }
 
     /**
      * 加载完成的回调
      */
-    private loadFunc() {
+    private loadFunc(data?: any) {
         if (isFunc(this.loading)) {
             this.loading(this.loadNum, this.count, this.pomiseLoads[this.loadNum])
         }
