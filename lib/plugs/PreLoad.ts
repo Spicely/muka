@@ -6,7 +6,7 @@ export default class PreLoad {
     /**
      *  加载文件数据
      */
-    private loads: string[] = []
+    private loads: (string | WindowBase64 | undefined)[] = []
 
     /**
      * 图片类型
@@ -28,7 +28,7 @@ export default class PreLoad {
      */
     private count: number = 0
 
-    constructor(imgs: string[] = []) {
+    constructor(imgs: (string | WindowBase64 | undefined)[] = []) {
         this.loads = imgs
         this.count = imgs.length
         this.pomiseLoads = this.loads.map((item: string): Promise<{} | void> => {
@@ -44,7 +44,7 @@ export default class PreLoad {
     /**
      * 完成所有加载的回调
      */
-    public success: (loads: string[], pomiseLoads: Array<Promise<{} | void>>) => void = () => { return }
+    public success: (loads: (string | WindowBase64 | undefined)[], pomiseLoads: Array<Promise<{} | void>>) => void = () => { return }
 
     /**
      * 依据后缀名 选择加载方式
