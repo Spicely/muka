@@ -50,6 +50,9 @@ export default class PreLoad {
      * 依据后缀名 选择加载方式
      */
     private getExtLoad(uri: string): Promise<{} | void> {
+        if (!uri) {
+            return Promise.resolve({})
+        }
         const index = uri.lastIndexOf('.')
         const ext = uri.substr(index + 1)
         const THIS = this
@@ -61,7 +64,7 @@ export default class PreLoad {
                     THIS.loadFunc()
                     resolve(uri)
                 })
-                img.addEventListener('error',  () => {
+                img.addEventListener('error', () => {
                     THIS.loadNum++
                     THIS.loadFunc()
                     reject('load img error ' + uri)

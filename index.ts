@@ -1,6 +1,6 @@
 export { default as browser } from './lib/browser'
 export { default as lang } from './lib/lang'
-export { default as json } from './lib/json'
-export { default as type } from './lib/type'
+export { omit } from './lib/json'
+export { isBool, isBlob, isFunc, isString, isNumber } from './lib/type'
 export { default as verify } from './lib/plugs/verify'
 export { default as PreLoad } from './lib/plugs/PreLoad'

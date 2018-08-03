@@ -1,7 +1,7 @@
 import getType from '../lang/getType'
 
 // 判断是否为Blob
-const isBlob = (it: any): boolean => {
+const isBlob = (it: any): it is Blob => {
     return getType(it) === 'blob'
 }
 
