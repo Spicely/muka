@@ -36,6 +36,12 @@ export default class PreLoad {
             return this.getExtLoad(item)
         })
     }
+
+    /**
+     * 已经缓存过的文件会触发回调
+     */
+
+    public completeLoad: (load: (string | WindowBase64 | undefined)) => void = () => { return }
     /**
      * 加载中的回调
      */
@@ -55,18 +61,29 @@ export default class PreLoad {
         }
         const index = uri.lastIndexOf('.')
         const ext = uri.substr(index + 1)
-        const THIS = this
         if (hash(this.imgTypes, ext)) {
             const img: HTMLImageElement = new Image()
             return new Promise((resolve, reject) => {
+                if (img.complete) {
+                    const delay = () => {
+                        this.loadNum++
+                        this.completeLoad(uri)
+                        this.loadFunc()
+                        resolve(uri)
+                        img.src = uri
+
+                    }
+                    setTimeout(delay, 10)
+                    return
+                }
                 img.addEventListener('load', () => {
-                    THIS.loadNum++
-                    THIS.loadFunc()
+                    this.loadNum++
+                    this.loadFunc()
                     resolve(uri)
                 })
                 img.addEventListener('error', () => {
-                    THIS.loadNum++
-                    THIS.loadFunc()
+                    this.loadNum++
+                    this.loadFunc()
                     reject('load img error ' + uri)
                 })
                 img.src = uri
