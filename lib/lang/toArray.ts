@@ -5,7 +5,11 @@ import isString from '../type/isString'
 const toArray = (it: any): any[] => {
     // 将伪数组转成数组
     if (it.length && !isArray(it) && !isString(it)) {
-        return Array.from(it)
+        try {
+            return Array.from(it)
+        } catch (e) {
+            return Array.prototype.slice.call(it)
+        }
     } else if (isArray(it)) {
         // 是数组直接返回
         return it

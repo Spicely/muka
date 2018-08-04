@@ -64,7 +64,7 @@ export default class PreLoad {
         if (hash(this.imgTypes, ext)) {
             const img: HTMLImageElement = new Image()
             return new Promise((resolve, reject) => {
-                if (img.complete) {
+                if (img.complete && img.width) {
                     const delay = () => {
                         this.loadNum++
                         this.completeLoad(uri)
