@@ -63,14 +63,14 @@ export default class PreLoad {
         const ext = uri.substr(index + 1)
         if (hash(this.imgTypes, ext)) {
             const img: HTMLImageElement = new Image()
+            img.src = uri
             return new Promise((resolve, reject) => {
-                if (img.complete && img.width) {
+                if (img.complete || img.width) {
                     const delay = () => {
                         this.loadNum++
                         this.completeLoad(uri)
                         this.loadFunc()
                         resolve(uri)
-                        img.src = uri
 
                     }
                     setTimeout(delay, 10)
@@ -86,7 +86,6 @@ export default class PreLoad {
                     this.loadFunc()
                     reject('load img error ' + uri)
                 })
-                img.src = uri
             })
         }
         return axios.get(uri).then((data: any) => {
