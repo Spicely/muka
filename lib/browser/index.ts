@@ -40,7 +40,11 @@ const browser: IBrowser = Object.create(null, {
     // 浏览器可见高度
     height: {
         get: () => {
-            return document.body.clientHeight
+            try {
+                return window.innerHeight
+            } catch (e) {
+                return 0
+            }
         }
     },
 
@@ -112,7 +116,11 @@ const browser: IBrowser = Object.create(null, {
     // 浏览器可见宽度
     width: {
         get: () => {
-            return document.body.clientWidth
+            try {
+                return window.innerWidth
+            } catch (e) {
+                return 0
+            }
         }
     }
 })

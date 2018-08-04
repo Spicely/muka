@@ -1,5 +1,5 @@
 export { default as browser } from './lib/browser'
-export { default as lang } from './lib/lang'
+export { toArray, getType, hash } from './lib/lang'
 export { omit } from './lib/json'
 export { isBool, isBlob, isFunc, isString, isNumber } from './lib/type'
 export { default as verify } from './lib/plugs/verify'
