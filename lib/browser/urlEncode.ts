@@ -1,5 +1,5 @@
 import getType from '../lang/getType'
-import notVal from '../type/notVal'
+import isEmpty from '../type/isEmpty'
 
 function getValue(type: string, key: string | number, value: any): string {
     let result: string = ''
@@ -23,7 +23,7 @@ function urlEncode(parmas: object, key?: string | number): string {
     let result: string = ''
     const keys: string[] = Object.keys(parmas)
     keys.map((item: string) => {
-        if (notVal(key)) {
+        if (isEmpty(key)) {
             result += getValue(getType(parmas[item]), item, parmas[item])
         } else {
             result += getValue(getType(parmas[item]), `${key}[${item}]`, parmas[item])

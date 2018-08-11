@@ -1,6 +1,9 @@
 import axios from 'axios'
 import hash from '../lang/hash'
 import isFunc from '../type/isFunc'
+import isNumber from '../type/isNumber'
+
+// const CancelToken: axios.CancelTokenStatic = axios.CancelToken
 
 export default class PreLoad {
     /**
@@ -22,6 +25,8 @@ export default class PreLoad {
      * 加载对象
      */
     private pomiseLoads: Array<Promise<{} | void>> = []
+
+    private timer: (number | Promise<{}>)[] = []
 
     /**
      * 加载文件总数
@@ -50,7 +55,19 @@ export default class PreLoad {
     /**
      * 完成所有加载的回调
      */
-    public success: (loads: (string | WindowBase64 | undefined)[], pomiseLoads: Array<Promise<{} | void>>) => void = () => { return }
+    public success: (loads: (string | WindowBase64 | undefined)[], pomiseLoads: Array<Promise<{} | void>>) => void = () => { this.clearAsync() }
+
+    /**
+     * 清除没有完成的异步事件
+     */
+
+    public clearAsync = () => {
+        this.timer.map((item: number | Promise<{}>) => {
+            if (isNumber(item)) {
+                clearTimeout(item)
+            }
+        })
+    }
 
     /**
      * 依据后缀名 选择加载方式
@@ -73,7 +90,7 @@ export default class PreLoad {
                         resolve(uri)
 
                     }
-                    setTimeout(delay, 10)
+                    this.timer.push(window.setTimeout(delay, 10))
                     return
                 }
                 img.addEventListener('load', () => {
