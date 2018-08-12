@@ -7,6 +7,7 @@ export interface IPublicConfig {
     package: string
     signType: string
     paySign: string
+    debug?: boolean
 }
 
 export interface IConfig {
