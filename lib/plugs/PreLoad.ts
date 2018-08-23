@@ -2,6 +2,7 @@ import axios from 'axios'
 import hash from '../lang/hash'
 import isFunc from '../type/isFunc'
 import isNumber from '../type/isNumber'
+import verify from './verify'
 
 // const CancelToken: axios.CancelTokenStatic = axios.CancelToken
 
@@ -78,7 +79,7 @@ export default class PreLoad {
         }
         const index = uri.lastIndexOf('.')
         const ext = uri.substr(index + 1)
-        if (hash(this.imgTypes, ext)) {
+        if (hash(this.imgTypes, ext) || verify.isBase64(uri)) {
             const img: HTMLImageElement = new Image()
             img.src = uri
             return new Promise((resolve, reject) => {

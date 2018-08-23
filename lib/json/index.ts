@@ -4,6 +4,6 @@
  *  Email Spicely@outlook.com
  */
 export { default as assign } from './assign'
-export { default as object } from './object'
+export { default as isObject } from './isObject'
 export { default as omit } from './omit'
 export { default as parseQueryString } from './parseQueryString'

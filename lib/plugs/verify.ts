@@ -13,7 +13,11 @@ const verify = {
     },
     // 电话验证
     isMobile: (value: string): boolean => {
-        return /(\\+86)?1[34578]\\d{9}$/.test(value)
+        return /^[1][3,4,5,7,8][0-9]{9}$/.test(value)
+    },
+    // 判断是否为base64
+    isBase64: (value: any) => {
+        return /^\s*data:([a-z]+\/[a-z0-9-+.]+(;[a-z-]+=[a-z0-9-]+)?)?(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s]*?)\s*$/i.test(value)
     }
 }
 export default verify
