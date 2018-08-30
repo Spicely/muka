@@ -1,9 +1,4 @@
-import { hash } from 'muka'
-
-// const observer = {
-//     subscribes: []
-//     subscribe
-// }
+import hash from '../lang/hash'
 
 class Observer {
     // 存储订阅模式
@@ -40,4 +35,6 @@ class Observer {
 
 }
 
-export default new Observer()
+const observer = new Observer()
+
+export default observer
