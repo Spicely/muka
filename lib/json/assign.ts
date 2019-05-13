@@ -1,7 +1,7 @@
 import object from '../json/object'
 import isArray from '../type/isArray'
 // 深度合并
-const assign = (minor: object = {}, main: object = {}): object => {
+const assign = (minor: any = {}, main: any = {}): object => {
     minor = { ...minor }
     for (let key in main) {
         if (object(main[key])) {

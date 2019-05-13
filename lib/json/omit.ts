@@ -1,5 +1,5 @@
 // 移除指定数组对象 返回一个浅复制对象
-const omit = (obj: object, fields: string[]): any  => {
+const omit = (obj: any = {}, fields: string[]): any  => {
     const shallowCopy = {
         ...obj
     }

@@ -13,7 +13,7 @@ const verify = {
     },
     // 电话验证
     isMobile: (value: string): boolean => {
-        return /^[1][3,4,5,7,8][0-9]{9}$/.test(value)
+        return /^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(value)
     },
     // 判断是否为base64
     isBase64: (value: any) => {

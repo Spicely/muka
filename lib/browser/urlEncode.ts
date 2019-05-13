@@ -19,7 +19,7 @@ function getValue(type: string, key: string | number, value: any): string {
     return result
 }
 
-function urlEncode(parmas: object, key?: string | number): string {
+function urlEncode(parmas: any, key?: string | number): string {
     let result: string = ''
     const keys: string[] = Object.keys(parmas)
     keys.map((item: string) => {

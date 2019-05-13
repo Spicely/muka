@@ -104,7 +104,7 @@ const browser: IBrowser = Object.create(null, {
                 }
             }
             const arr = search.split('&')
-            const obj: object = {}
+            const obj: any = {}
             arr.map((item: string) => {
                 const tmpArr = item.split('=')
                 obj[decodeURIComponent(tmpArr[0])] = decodeURIComponent(tmpArr[1])

@@ -3,6 +3,7 @@ import hash from '../lang/hash'
 import isFunc from '../type/isFunc'
 import isNumber from '../type/isNumber'
 import verify from './verify'
+import { isString } from '../type';
 
 // const CancelToken: axios.CancelTokenStatic = axios.CancelToken
 
@@ -37,9 +38,11 @@ export default class PreLoad {
     constructor(imgs: (string | WindowBase64 | undefined)[] = []) {
         this.loads = imgs
         this.count = imgs.length
-        this.pomiseLoads = this.loads.map((item: string): Promise<{} | void> => {
+        this.loads.forEach((item: string | WindowBase64 | undefined) => {
             // 获得文件后缀名
-            return this.getExtLoad(item)
+            if (item && isString(item)) {
+                this.pomiseLoads.push(this.getExtLoad(item))
+            }
         })
     }
 

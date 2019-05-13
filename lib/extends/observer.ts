@@ -23,7 +23,7 @@ class Observer {
         }
     }
 
-    public publish(...arg: any[]) {
+    public publish(...arg: []) {
         const event: string = arg.splice(0, 1)[0]
         const keys: string[] = Object.keys(this.subscribes)
         if (hash(keys, event)) {
