@@ -18,6 +18,10 @@ const verify = {
     // 判断是否为base64
     isBase64: (value: any) => {
         return /^\s*data:([a-z]+\/[a-z0-9-+.]+(;[a-z-]+=[a-z0-9-]+)?)?(;base64)?,([a-z0-9!$&',()*+;=\-._~:@\/?%\s]*?)\s*$/i.test(value)
+    },
+    // 判断是否为身份证
+    isIDCard: (value: string) => {
+        return /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value)
     }
 }
 export default verify
