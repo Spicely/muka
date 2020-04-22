@@ -3,7 +3,9 @@ interface IConvert {
     num: number
     unit: string
 }
+
 type IConvertUnit = [string, string, string, string]
+
 function strNumSize(tempNum: number): number {
     const stringNum = tempNum.toString()
     const index = stringNum.indexOf('.')

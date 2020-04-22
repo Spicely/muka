@@ -86,12 +86,12 @@ const browser: IBrowser = Object.create(null, {
     // 获得浏览器传递的参数
     search: {
         get() {
-            let search = location.search
+            let search = window.location.search
             if (search) {
-                search = location.search.substr(1)
+                search = window.location.search.substr(1)
             } else {
                 // 没有得到可能是单页面应用从#后截取
-                const query = location.hash.split('?')
+                const query = window.location.hash.split('?')
                 try {
                     if (query[1]) {
                         search = query[1]

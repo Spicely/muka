@@ -12,7 +12,7 @@ export default class PreLoad {
      *  加载文件数据
      */
     // tslint:disable-next-line: array-type
-    private loads: (string | ArrayBuffer | WindowBase64 | undefined | null)[] = []
+    private loads: (string | ArrayBuffer | undefined | null)[] = []
 
     /**
      * 图片类型
@@ -38,10 +38,10 @@ export default class PreLoad {
     private count: number = 0
 
     // tslint:disable-next-line: array-type
-    constructor(imgs: (string | WindowBase64 | ArrayBuffer | undefined | null)[] = []) {
+    constructor(imgs: (string | ArrayBuffer | undefined | null)[] = []) {
         this.loads = imgs
         this.count = imgs.length
-        this.loads.forEach((item: string | WindowBase64 | ArrayBuffer | undefined | null) => {
+        this.loads.forEach((item: string | ArrayBuffer | undefined | null) => {
             // 获得文件后缀名
             if ((item && isString(item))) {
                 this.pomiseLoads.push(this.getExtLoad(item))
@@ -53,7 +53,7 @@ export default class PreLoad {
      * 已经缓存过的文件会触发回调
      */
 
-    public completeLoad: (load: (string | WindowBase64 | ArrayBuffer | undefined | null)) => void = () => { return }
+    public completeLoad: (load: (string | ArrayBuffer | undefined | null)) => void = () => { return }
 
     /**
      * 加载中的回调
@@ -66,7 +66,7 @@ export default class PreLoad {
      */
 
     // tslint:disable-next-line: array-type
-    public success: (loads: (string | WindowBase64 | ArrayBuffer | undefined)[], pomiseLoads: Array<Promise<{} | void>>) => void = () => { this.clearAsync() }
+    public success: (loads: (string | ArrayBuffer | undefined)[], pomiseLoads: Array<Promise<{} | void>>) => void = () => { this.clearAsync() }
 
     /**
      * 清除没有完成的异步事件

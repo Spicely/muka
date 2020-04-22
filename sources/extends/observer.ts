@@ -23,7 +23,7 @@ export default class Observer {
         }
     }
 
-    public publish(event: string, ...arg: any[]) {
+    public publish(event: string, ...arg: any) {
         const keys: string[] = Object.keys(this.subscribes)
         if (hash(keys, event)) {
             this.subscribes[event].map((callback: () => void) => {

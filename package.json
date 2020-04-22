@@ -2,8 +2,9 @@
     "name": "muka",
     "dependencies": {
         "@types/axios": "^0.14.0",
-        "axios": "^0.18.0",
-        "tslint-react": "^3.5.1"
+        "axios": "^0.19.2",
+        "tslint": "^6.1.1",
+        "tslint-react": "^5.0.0"
     },
     "version": "0.2.3"
 }
